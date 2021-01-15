@@ -30,13 +30,13 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
+                endpoints.MapGet("/greetings", async context =>
                 {
                     await context.Response.WriteAsync(Configuration["MyVar"]);
                 });
 
                 endpoints.MapControllerRoute(
-                    "default", 
+                    "default",
                     "{controller=Home}/{action=Index}/{id?}");
             });
         }
