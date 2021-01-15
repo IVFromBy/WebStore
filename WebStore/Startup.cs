@@ -4,29 +4,27 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebStore
 {
     public record Startup(IConfiguration Configuration)
     {
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddMvc();
             services.AddControllersWithViews();
         }
 
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -36,6 +34,10 @@ namespace WebStore
                 {
                     await context.Response.WriteAsync(Configuration["MyVar"]);
                 });
+
+                endpoints.MapControllerRoute(
+                    "default", 
+                    "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
