@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Employee>
+
+    <a asp-controller="Home" asp-action="Index">Домой</a>
+
+    <h3>Список сотрудников</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Возраст</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <td>@emp.LastName</td>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.Patronymic</td>
+                    <td>@emp.Age</td>
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-id="@emp.Id">
+                            <i class="fa fa-info-circle"></i>
+                        </a>|<a href="#">
+                            <i class="fa fa-edit"></i>
+                        </a>|
+                         <a href="#" class="text-danger">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>

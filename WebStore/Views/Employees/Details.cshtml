@@ -1,14 +1,12 @@
 ﻿@model WebStore.Models.Employee
 
-<!DOCTYPE html>
+@{
+    ViewBag.Title = $"Карточка сотрудн";
+}
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Карточка сотрудника</title>
-</head>
-<body>
-    <a href="~/Home/Employees">Назад</a>
+    <a asp-action="Index" class="btn btn-default">Назад</a>
+    <a href="#" class="btn btn-warning">Редактировать</a>
+    <a href="#" class=" btn btn-danger">Удалить</a>
 
     <h3>Карточка сотрудника</h3>
 
@@ -28,6 +26,3 @@
         <tr><td>IQ:</td> <td>@Model.IQ</td></tr>
 
     </table>
-    
-</body>
-</html>
