@@ -55,7 +55,7 @@ namespace WebStore.Controllers
             },
         };
 
-        public IActionResult Index() => View("Sec");
+        public IActionResult Index() => View();
 
         public IActionResult Second()
         {
