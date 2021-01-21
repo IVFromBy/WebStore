@@ -9,10 +9,8 @@
 <h3>Удалить сотрудника @Html.DisplayFor(model => model.LastName)?</h3>
 
 <div>
-    @*<form asp-action="Delete">*@
-
-    <div class="form-group">
+    <form asp-action="DeleteAction" asp-route-id="@Model.Id" >    
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index" class="btn btn-default">Отмена</a>
-    </div>
+    </form>
 </div>

@@ -27,7 +27,6 @@ namespace WebStore.Controllers
 
             return NotFound();
 
-
         }
 
         public IActionResult Edit(int Id)
@@ -41,6 +40,19 @@ namespace WebStore.Controllers
 
         }
 
+        public IActionResult EditAction(Employee pEmp)
+        {
+            int? index = _Employees.FindIndex(x => x.Id == pEmp.Id);
+
+            if (index != null)
+            {
+                _Employees[index.Value] = pEmp;
+                return View("Index",_Employees);
+            }
+            return View("../Home/NotFound");
+
+        }
+
         public IActionResult Delete(int Id)
         {
             var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
@@ -49,8 +61,22 @@ namespace WebStore.Controllers
                 return View(_employee);
 
             return NotFound();
+        }
+        
+        
+        public IActionResult DeleteAction(int? Id)
+        {
+            if (Id != null)
+            {
+                var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
+                if (_employee != null)
+                {
+                    _Employees.Remove(_employee);
 
-
+                    return View("Index",_Employees);
+                }
+            }
+            return View("../Home/NotFound");
         }
     }
 }
