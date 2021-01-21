@@ -4,25 +4,27 @@
     ViewBag.Title = $"Карточка сотрудн";
 }
 
+<h3>Карточка сотрудника</h3>
+
+<table>
+    <tr><td>#:</td> <td>@Model.Id</td></tr>
+    <tr><td>Фамилия:</td> <td>@Model.LastName</td></tr>
+    <tr><td>Имя:</td> <td>@Model.FirstName</td></tr>
+    <tr><td>Отчество:</td> <td>@Model.Patronymic</td></tr>
+    <tr><td>Возраст:</td> <td>@Model.Age</td></tr>
+    <tr><td>Рабочий телефон:</td> <td>@Model.PhoneNumber</td></tr>
+    <tr />
+    <tr />
+    <tr />
+    <tr><td>Дата найма:</td> <td>@Model.DateOfHiring</td></tr>
+    <tr><td>Опыт работы:</td> <td>@Model.Experience</td></tr>
+    <tr><td>Образование:</td> <td>@Model.Education</td></tr>
+    <tr><td>IQ:</td> <td>@Model.IQ</td></tr>
+
+</table>
+
+<div class="form-group">
     <a asp-action="Index" class="btn btn-default">Назад</a>
-    <a href="#" class="btn btn-warning">Редактировать</a>
-    <a href="#" class=" btn btn-danger">Удалить</a>
-
-    <h3>Карточка сотрудника</h3>
-
-    <table>
-        <tr><td>#:</td> <td>@Model.Id</td></tr>
-        <tr><td>Фамилия:</td> <td>@Model.LastName</td></tr>
-        <tr><td>Имя:</td> <td>@Model.FirstName</td></tr>
-        <tr><td>Отчество:</td> <td>@Model.Patronymic</td></tr>
-        <tr><td>Возраст:</td> <td>@Model.Age</td></tr>
-        <tr><td>Рабочий телефон:</td> <td>@Model.PhoneNumber</td></tr>
-        <tr />
-        <tr />
-        <tr />
-        <tr><td>Дата найма:</td> <td>@Model.DateOfHiring</td></tr>
-        <tr><td>Опыт работы:</td> <td>@Model.Experience</td></tr>
-        <tr><td>Образование:</td> <td>@Model.Education</td></tr>
-        <tr><td>IQ:</td> <td>@Model.IQ</td></tr>
-
-    </table>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Редактировать</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class=" btn btn-danger">Удалить</a>
+</div>

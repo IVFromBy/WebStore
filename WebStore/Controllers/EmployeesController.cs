@@ -29,5 +29,28 @@ namespace WebStore.Controllers
 
 
         }
+
+        public IActionResult Edit(int Id)
+        {
+            var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
+
+            if (_employee is not null)
+                return View(_employee);
+
+            return NotFound();
+
+        }
+
+        public IActionResult Delete(int Id)
+        {
+            var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
+
+            if (_employee is not null)
+                return View(_employee);
+
+            return NotFound();
+
+
+        }
     }
 }
