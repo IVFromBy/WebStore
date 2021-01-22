@@ -8,70 +8,27 @@ namespace WebStore.Controllers
 {
     public class HomeController : Controller
     {
-        private static readonly List<Employee> __Employees = new()
-        {
-            new Employee
-            {
-                Id = 1,
-                LastName = "Aстанов",
-                FirstName = "Артур",
-                Patronymic = "Александрович",
-                Age = 21
-                         ,
-                DateOfHiring = DateTime.Parse("2020-12-12"),
-                Education = "Среднее"
-                         ,
-                Experience = 0,
-                IQ = 110,
-                PhoneNumber = "4-35-22"
-            },
-            new Employee
-            {
-                Id = 2,
-                LastName = "Бегунок",
-                FirstName = "Баграт",
-                Patronymic = "Борисович"
-                ,
-                Age = 22,
-                DateOfHiring = DateTime.Parse("2019-01-30"),
-                Education = "Среднее",
-                Experience = 1,
-                IQ = 130,
-                PhoneNumber = "4-12-34"
-            },
-            new Employee
-            {
-                Id = 3,
-                LastName = "Васерман",
-                FirstName = "Валентин",
-                Patronymic = "Владимирович"
-                ,
-                Age = 31,
-                DateOfHiring = DateTime.Parse("2018-01-30"),
-                Education = "Высшее",
-                Experience = 6,
-                IQ = 140,
-                PhoneNumber = "4-15-10"
-            },
-        };
 
-        public IActionResult Index() => View("Sec");
+        public IActionResult Index() => View();
 
-        public IActionResult Second()
-        {
-            return Content("Sec Controller Aaction");
-        }
+        public IActionResult Login() => View("Login");
 
-        public IActionResult Employees() => View(__Employees);
+        public IActionResult ContactUs() => View("ContactUs");
 
-        public IActionResult Details(int Id)
-        {
-            var _employee = __Employees.Where(x => x.Id == Id).FirstOrDefault();
+        public IActionResult Cart() => View("Cart");
 
-            if (!(_employee is object))
-                _employee = new Employee();
+        public IActionResult Checkout() => View("Checkout");
 
-            return View(_employee);
-        }
+        public IActionResult Blog() => View("Blog");
+
+        public IActionResult BlogSingle() => View("BlogSingle");
+
+        public IActionResult NotFound() => View("NotFound");
+
+        public IActionResult ProductDetails() => View("ProductDetails");
+
+        public IActionResult Product() => View("Shop");
+
+
     }
 }

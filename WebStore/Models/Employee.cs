@@ -15,19 +15,5 @@ namespace WebStore.Models
         public int IQ { get; set; }
         public string PhoneNumber { get; set; }
 
-        public Employee()
-        {
-            Id = 0;
-            FirstName = "Имя"; 
-            LastName = "Фамилия";
-            Patronymic = "Отчество";
-            Age = 18;
-            DateOfHiring = DateTime.Today;
-            Experience = 0;
-            Education = "Среднее";
-            IQ = 110;
-            PhoneNumber = "0-00-00";
-                
-        }
     }
 }
