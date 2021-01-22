@@ -47,10 +47,9 @@ namespace WebStore.Controllers
             if (index != null)
             {
                 _Employees[index.Value] = pEmp;
-                return View("Index",_Employees);
+                return RedirectToAction("Index"); 
             }
-            return View("../Home/NotFound");
-
+            return RedirectToAction("NotFound","Home");
         }
 
         public IActionResult Delete(int Id)
@@ -73,10 +72,11 @@ namespace WebStore.Controllers
                 {
                     _Employees.Remove(_employee);
 
-                    return View("Index",_Employees);
+                    return RedirectToAction("Index");
+
                 }
             }
-            return View("../Home/NotFound");
+            return RedirectToAction("NotFound", "Home");
         }
     }
 }
