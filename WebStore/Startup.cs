@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore.Infrastructure.Middleware;
 
 namespace WebStore
 {
@@ -26,7 +27,18 @@ namespace WebStore
             app.UseStaticFiles();
 
             app.UseRouting();
-            
+
+            app.UseWelcomePage("/wel");
+
+            app.UseMiddleware<TestMiddleware>();
+
+            app.MapWhen(
+                 context => context.Request.Query.ContainsKey("id") && context.Request.Query["id"]=="5",
+                 context => context.Run(async request => await request.Response.WriteAsync("Hell id = 5!!!"))
+                );
+
+            app.Map("/hhh", context => context.Run(async request => await request.Response.WriteAsync("Hell!!!")));
+
             app.UseEndpoints(endpoints =>
             {
                 //Проекция запроса на действие
