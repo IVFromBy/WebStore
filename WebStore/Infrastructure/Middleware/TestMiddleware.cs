@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebStore.Infrastructure.Middleware
@@ -18,9 +15,9 @@ namespace WebStore.Infrastructure.Middleware
             //context.Request
             //context.Response - если изменяем ответ, то прерываем ответ
             var next = _Next(context);
-            
+
             // дейстиве во время того, как оставшеаяся часть конвейер что-то делате
-            
+
             await next; //Точка синхронизации
 
             // Действие после завершения работы осавшейся части  конвейера

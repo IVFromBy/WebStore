@@ -13,7 +13,9 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {            
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services
+                .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConventions())*/)
+                .AddRazorRuntimeCompilation();
         }
 
 
