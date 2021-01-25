@@ -31,14 +31,18 @@ namespace WebStore.Controllers
 
         }
 
+        public IActionResult Create() => View("Edit", new EmployeeViewModel());
 
         #region Edit
         //[Route("info(id-{id})")]
-        public IActionResult Edit(int Id)
+        public IActionResult Edit(int? Id)
         {
+            if (Id is null)
+                return View(new EmployeeViewModel());
+
             if (Id <= 0) return BadRequest();
 
-            var employee = _EmployeesData.Get(Id);
+            var employee = _EmployeesData.Get((int)Id);
 
             if (employee is null)
                 return RedirectToAction("NotFound", "Home");
@@ -78,9 +82,12 @@ namespace WebStore.Controllers
                 PhoneNumber = pEmp.PhoneNumber,
             };
 
-            _EmployeesData.Update(employee);
-            return RedirectToAction("Index");
+            if (employee.Id == 0)
+                _EmployeesData.Add(employee);
+            else
+                _EmployeesData.Update(employee);
 
+            return RedirectToAction("Index");
 
         }
         #endregion
@@ -117,6 +124,6 @@ namespace WebStore.Controllers
             return RedirectToAction("Index");
         }
         #endregion
-    
+
     }
 }
