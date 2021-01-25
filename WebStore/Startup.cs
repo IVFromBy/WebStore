@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -11,8 +11,7 @@ namespace WebStore
     {
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            //services.AddMvc();
+        {            
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
@@ -27,9 +26,10 @@ namespace WebStore
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            
             app.UseEndpoints(endpoints =>
             {
+                //Проекция запроса на действие
                 endpoints.MapGet("/greetings", async context =>
                 {
                     await context.Response.WriteAsync(Configuration["MyVar"]);
