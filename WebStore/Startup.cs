@@ -19,7 +19,7 @@ namespace WebStore
 
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConventions())*/)
-                .AddRazorRuntimeCompilation();
+                .AddRazorRuntimeCompilation();            
         }
 
 
@@ -28,6 +28,7 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
             app.UseStaticFiles();
