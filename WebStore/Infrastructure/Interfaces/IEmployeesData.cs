@@ -6,11 +6,11 @@ using WebStore.Models;
 
 namespace WebStore.Infrastructure.Interfaces
 {
-    interface IEmployeesData
+    public interface IEmployeesData
     {
         IEnumerable<Employee> Get();
 
-        Employee Gey(int id);
+        Employee Get(int id);
 
         int Add(Employee employee);
 

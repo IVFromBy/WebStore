@@ -4,81 +4,119 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Data;
+using WebStore.Infrastructure.Interfaces;
 using WebStore.Models;
+using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
-   //[Route("staff")]
+    //[Route("staff")]
     public class EmployeesController : Controller
     {
-        private List<Employee> _Employees;
-        public EmployeesController()
-        {
-            _Employees = TestData.Employees;
+        private readonly IEmployeesData _EmployeesData;
 
-        }
-     //[Route("all")]
-        public IActionResult Index() => View(_Employees);
+        public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
+
+        //[Route("all")]
+        public IActionResult Index() => View(_EmployeesData.Get());
 
         public IActionResult Details(int Id)
         {
-            var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
+            var _employee = _EmployeesData.Get(Id);
 
             if (_employee is not null)
                 return View(_employee);
 
-            return NotFound();
+            return RedirectToAction("NotFound", "Home");
 
         }
+
+
+        #region Edit
         //[Route("info(id-{id})")]
         public IActionResult Edit(int Id)
         {
-            var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
+            if (Id <= 0) return BadRequest();
 
-            if (_employee is not null)
-                return View(_employee);
+            var employee = _EmployeesData.Get(Id);
 
-            return NotFound();
+            if (employee is null)
+                return RedirectToAction("NotFound", "Home");
 
-        }
-
-        public IActionResult EditAction(Employee pEmp)
-        {
-            int? index = _Employees.FindIndex(x => x.Id == pEmp.Id);
-
-            if (index != null)
+            return View(new EmployeeViewModel
             {
-                _Employees[index.Value] = pEmp;
-                return RedirectToAction("Index"); 
-            }
-            return RedirectToAction("NotFound","Home");
+                Id = employee.Id,
+                Age = employee.Age,
+                DateOfHiring = employee.DateOfHiring,
+                Education = employee.Education,
+                Experience = employee.Experience,
+                FirstName = employee.FirstName,
+                IQ = employee.IQ,
+                LastName = employee.LastName,
+                Patronymic = employee.Patronymic,
+                PhoneNumber = employee.PhoneNumber,
+            });
         }
 
+        [HttpPost]
+        public IActionResult Edit(EmployeeViewModel pEmp)
+        {
+            if (pEmp is null)
+                throw new ArgumentNullException(nameof(pEmp));
+
+            var employee = new Employee
+            {
+                Id = pEmp.Id,
+                Age = pEmp.Age,
+                DateOfHiring = pEmp.DateOfHiring,
+                Education = pEmp.Education,
+                Experience = pEmp.Experience,
+                FirstName = pEmp.FirstName,
+                IQ = pEmp.IQ,
+                LastName = pEmp.LastName,
+                Patronymic = pEmp.Patronymic,
+                PhoneNumber = pEmp.PhoneNumber,
+            };
+
+            _EmployeesData.Update(employee);
+            return RedirectToAction("Index");
+
+
+        }
+        #endregion
+
+        #region Delete
         public IActionResult Delete(int Id)
         {
-            var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
+            if (Id <= 0) return BadRequest();
 
-            if (_employee is not null)
-                return View(_employee);
+            var employee = _EmployeesData.Get(Id);
 
-            return NotFound();
-        }
-        
-        
-        public IActionResult DeleteAction(int? Id)
-        {
-            if (Id != null)
+            if (employee is null)
+                return RedirectToAction("NotFound", "Home");
+
+            return View(new EmployeeViewModel
             {
-                var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
-                if (_employee != null)
-                {
-                    _Employees.Remove(_employee);
-
-                    return RedirectToAction("Index");
-
-                }
-            }
-            return RedirectToAction("NotFound", "Home");
+                Id = employee.Id,
+                Age = employee.Age,
+                DateOfHiring = employee.DateOfHiring,
+                Education = employee.Education,
+                Experience = employee.Experience,
+                FirstName = employee.FirstName,
+                IQ = employee.IQ,
+                LastName = employee.LastName,
+                Patronymic = employee.Patronymic,
+                PhoneNumber = employee.PhoneNumber,
+            });
         }
+
+        [HttpPost]
+        public IActionResult DeleteAction(int Id)
+        {
+            _EmployeesData.Delete(Id);
+            return RedirectToAction("Index");
+        }
+        #endregion
+    
     }
 }
