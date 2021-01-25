@@ -8,6 +8,7 @@ using WebStore.Models;
 
 namespace WebStore.Controllers
 {
+   //[Route("staff")]
     public class EmployeesController : Controller
     {
         private List<Employee> _Employees;
@@ -16,6 +17,7 @@ namespace WebStore.Controllers
             _Employees = TestData.Employees;
 
         }
+     //[Route("all")]
         public IActionResult Index() => View(_Employees);
 
         public IActionResult Details(int Id)
@@ -28,7 +30,7 @@ namespace WebStore.Controllers
             return NotFound();
 
         }
-
+        //[Route("info(id-{id})")]
         public IActionResult Edit(int Id)
         {
             var _employee = _Employees.FirstOrDefault(x => x.Id == Id);
