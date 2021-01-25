@@ -67,28 +67,30 @@ namespace WebStore.Controllers
         {
             if (pEmp is null)
                 throw new ArgumentNullException(nameof(pEmp));
-
-            var employee = new Employee
+            if (ModelState.IsValid)
             {
-                Id = pEmp.Id,
-                Age = pEmp.Age,
-                DateOfHiring = pEmp.DateOfHiring,
-                Education = pEmp.Education,
-                Experience = pEmp.Experience,
-                FirstName = pEmp.FirstName,
-                IQ = pEmp.IQ,
-                LastName = pEmp.LastName,
-                Patronymic = pEmp.Patronymic,
-                PhoneNumber = pEmp.PhoneNumber,
-            };
+                var employee = new Employee
+                {
+                    Id = pEmp.Id,
+                    Age = pEmp.Age,
+                    DateOfHiring = pEmp.DateOfHiring,
+                    Education = pEmp.Education,
+                    Experience = pEmp.Experience,
+                    FirstName = pEmp.FirstName,
+                    IQ = pEmp.IQ,
+                    LastName = pEmp.LastName,
+                    Patronymic = pEmp.Patronymic,
+                    PhoneNumber = pEmp.PhoneNumber,
+                };
 
-            if (employee.Id == 0)
-                _EmployeesData.Add(employee);
-            else
-                _EmployeesData.Update(employee);
+                if (employee.Id == 0)
+                    _EmployeesData.Add(employee);
+                else
+                    _EmployeesData.Update(employee);
 
-            return RedirectToAction("Index");
-
+                return RedirectToAction("Index");
+            }
+            return View(pEmp);
         }
         #endregion
 
