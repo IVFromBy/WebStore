@@ -1,6 +1,6 @@
 ﻿namespace WebStore.Domain.Entites.Base.Interfaces
 {
-    public interface InameEntity : IEntity
+    public interface INameEntity : IEntity
     {
         string Name { get; set; }
     }
