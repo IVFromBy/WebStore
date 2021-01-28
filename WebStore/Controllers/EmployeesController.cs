@@ -67,6 +67,7 @@ namespace WebStore.Controllers
         {
             if (pEmp is null)
                 throw new ArgumentNullException(nameof(pEmp));
+
             if (pEmp.FirstName == "Admin")
                 ModelState.AddModelError("", "Админы уже есть");
 
