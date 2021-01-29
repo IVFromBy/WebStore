@@ -1,4 +1,5 @@
-﻿using WebStore.Domain.Entites.Base;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using WebStore.Domain.Entites.Base;
 using WebStore.Domain.Entites.Base.Interfaces;
 
 namespace WebStore.Domain.Entites
@@ -9,10 +10,17 @@ namespace WebStore.Domain.Entites
 
         public int SectionId { get; set; }
 
+        [ForeignKey(nameof(Section))]
+        public Section Section { get; set; }
+        
         public int? BrandId { get; set; }
+
+        [ForeignKey(nameof(BrandId))]
+        public Brand Brand { get; set; }
 
         public string ImageUrl { get; set; }
 
+        [Column(TypeName ="decimal(18,2)"]
         public decimal Price { get; set; }
     }
 }
