@@ -16,6 +16,7 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+            services.AddTransient<IProductData, InMemoryProductData>();
 
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConventions())*/)
@@ -48,11 +49,6 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
-                //Проекция запроса на действие
-                endpoints.MapGet("/greetings", async context =>
-                {
-                    await context.Response.WriteAsync(Configuration["MyVar"]);
-                });
 
                 endpoints.MapControllerRoute(
                     "default",

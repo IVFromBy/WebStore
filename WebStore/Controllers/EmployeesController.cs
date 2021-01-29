@@ -67,30 +67,34 @@ namespace WebStore.Controllers
         {
             if (pEmp is null)
                 throw new ArgumentNullException(nameof(pEmp));
-            if (ModelState.IsValid)
+
+            if (pEmp.FirstName == "Admin")
+                ModelState.AddModelError("", "Админы уже есть");
+
+            if (!ModelState.IsValid)
             {
-                var employee = new Employee
-                {
-                    Id = pEmp.Id,
-                    Age = pEmp.Age,
-                    DateOfHiring = pEmp.DateOfHiring,
-                    Education = pEmp.Education,
-                    Experience = pEmp.Experience,
-                    FirstName = pEmp.FirstName,
-                    IQ = pEmp.IQ,
-                    LastName = pEmp.LastName,
-                    Patronymic = pEmp.Patronymic,
-                    PhoneNumber = pEmp.PhoneNumber,
-                };
-
-                if (employee.Id == 0)
-                    _EmployeesData.Add(employee);
-                else
-                    _EmployeesData.Update(employee);
-
-                return RedirectToAction("Index");
+                return View(pEmp);
             }
-            return View(pEmp);
+            var employee = new Employee
+            {
+                Id = pEmp.Id,
+                Age = pEmp.Age,
+                DateOfHiring = pEmp.DateOfHiring,
+                Education = pEmp.Education,
+                Experience = pEmp.Experience,
+                FirstName = pEmp.FirstName,
+                IQ = pEmp.IQ,
+                LastName = pEmp.LastName,
+                Patronymic = pEmp.Patronymic,
+                PhoneNumber = pEmp.PhoneNumber,
+            };
+
+            if (employee.Id == 0)
+                _EmployeesData.Add(employee);
+            else
+                _EmployeesData.Update(employee);
+
+            return RedirectToAction("Index");
         }
         #endregion
 
