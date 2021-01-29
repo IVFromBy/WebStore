@@ -1,9 +1,12 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Middleware;
+using WebStore.Infrastructure.Services;
 
 namespace WebStore
 {
@@ -12,8 +15,11 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddMvc();
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+
+            services
+                .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConventions())*/)
+                .AddRazorRuntimeCompilation();            
         }
 
 
@@ -22,14 +28,27 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseWelcomePage("/wel");
+
+            app.UseMiddleware<TestMiddleware>();
+
+            app.MapWhen(
+                 context => context.Request.Query.ContainsKey("id") && context.Request.Query["id"]=="5",
+                 context => context.Run(async request => await request.Response.WriteAsync("Hell id = 5!!!"))
+                );
+
+            app.Map("/hhh", context => context.Run(async request => await request.Response.WriteAsync("Hell!!!")));
+
             app.UseEndpoints(endpoints =>
             {
+                //Проекция запроса на действие
                 endpoints.MapGet("/greetings", async context =>
                 {
                     await context.Response.WriteAsync(Configuration["MyVar"]);
