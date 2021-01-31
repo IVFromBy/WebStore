@@ -17,5 +17,9 @@ namespace WebStore.ViewModels
 
         public List<SectionViewModel> ChildsSection { get; } = new();
 
+        public int ProductCount { get; set; }
+
+        public int TotalProductCount => ProductCount + ChildsSection.Sum(c => c.TotalProductCount);
+
     }
 }
