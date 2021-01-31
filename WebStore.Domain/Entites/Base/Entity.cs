@@ -6,7 +6,7 @@ namespace WebStore.Domain.Entites.Base
 {
     public abstract class Entity : IEntity
     {
-        //[Key, DatabaseGenerated(DatabaseGeneratedOption)]
+        //[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)] // если PK в базе имеет отличное название от id 
         public int Id { get; set; }
     }
 }

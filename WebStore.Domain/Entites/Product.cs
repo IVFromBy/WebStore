@@ -10,7 +10,7 @@ namespace WebStore.Domain.Entites
 
         public int SectionId { get; set; }
 
-        [ForeignKey(nameof(Section))]
+        [ForeignKey(nameof(SectionId))]
         public Section Section { get; set; }
         
         public int? BrandId { get; set; }
@@ -20,7 +20,7 @@ namespace WebStore.Domain.Entites
 
         public string ImageUrl { get; set; }
 
-        [Column(TypeName ="decimal(18,2)"]
+        [Column(TypeName ="decimal(18,2)")]
         public decimal Price { get; set; }
     }
 }
