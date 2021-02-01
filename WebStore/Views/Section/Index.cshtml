@@ -1,0 +1,61 @@
+﻿@model IEnumerable<SectionViewModel>
+
+@{
+    ViewBag.Title = "Список секций";
+}
+<div class="container">
+    <a asp-controller="Home" asp-action="Index">Домой</a>
+
+    <h3>Список категорий</h3>
+
+    <div>
+        <a asp-action="Create" class="btn btn-primary">Создать</a>|<a asp-action="Edit" class="btn btn-primary">Создать ч\з edit</a>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>название категории</th>
+                <th>Название родителя</th>
+                <th>Количество товаров</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model)
+            {
+                <tr>
+                    <td>@s.Name.Trim()</td>
+                    <td />
+                    <td>@s.TotalProductCount</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@s.Id">
+                            <i class="fa fa-edit"></i>
+                        </a>|
+                        <a asp-action="Delete" asp-route-id="@s.Id" class="text-danger">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+                @foreach (var c in s.ChildsSection)
+                {
+                    <tr>
+                        <td>@c.Name.Trim()</td>
+                        <td>@c.Parent.Name </td>
+                        <td>@c.TotalProductCount</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@c.Id">
+                                <i class="fa fa-edit"></i>
+                            </a>|
+                            <a asp-action="Delete" asp-route-id="@c.Id" class="text-danger">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+
+    </table>
+</div>        

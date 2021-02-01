@@ -8,9 +8,17 @@
 
 <section>
     <div class="container">
+        <div>
+            <a asp-controller="Section" asp-action="Index" class="btn btn-default">Список каталогов</a>
+            <a asp-controller="Brand" asp-action="Index" class="btn btn-default">Список брендов</a>
+            <a class="btn btn-default">Список товаров</a>
+        </div>
+        <br/>
+        <br/>
+
         <div class="row">
             <div class="col-sm-3">
-                <partial name="Partial/_LeftSideBar"/>
+                <partial name="Partial/_LeftSideBar" />
 
             </div>
 

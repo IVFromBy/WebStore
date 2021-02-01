@@ -33,7 +33,77 @@ namespace WebStore.Infrastructure.Services.InSql
             return query;
         }
 
-        
+        public Section GetSection(int sectionId)
+        {
+            var section = _db.Sections.Where(s => s.Id == sectionId).FirstOrDefault();
+
+            if (section is null)
+                return new Section();
+
+            return section;
+        }
+
+        public Brand GetBrand(int brandId)
+        {
+            var brand = _db.Brands.Where(s => s.Id == brandId)                
+                .FirstOrDefault();
+
+           // brand.Products = GetProducts(new ProductFilter { BrandId = brand.Id, SectionId = null }).ToList();
+            if (brand is null)
+                return new Brand();
+
+            return brand;
+        }
+
+        public int AddBrand(Brand brand)
+        {
+            
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Brands.Add(brand);
+             
+                _db.SaveChanges();             
+
+                _db.Database.CommitTransaction();
+
+                return brand.Id;
+            }
+            
+        }
+
+        public int UpdateBrand(Brand brand)
+        {
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Brands.Update(brand);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+
+                return brand.Id;
+            }
+        }
+
+        public void DeleteBrand(int Id)
+        {
+            using (_db.Database.BeginTransaction())
+            {
+                var brand = _db.Brands.Where(s => s.Id == Id)
+                .FirstOrDefault();
+
+                if (brand != null)
+                {
+
+                    _db.Brands.Remove(brand);
+
+                    _db.SaveChanges();
+
+                    _db.Database.CommitTransaction();
+                }
+
+            }
+        }
     }
 
 }

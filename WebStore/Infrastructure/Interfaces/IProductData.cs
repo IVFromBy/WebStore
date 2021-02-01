@@ -14,5 +14,15 @@ namespace WebStore.Infrastructure.Interfaces
         IEnumerable<Brand> GetBrands();
 
         IEnumerable<Product> GetProducts(ProductFilter Filter = null);
+
+        public Section GetSection(int sectionId);
+
+        public Brand GetBrand(int brandId);
+
+        public int AddBrand(Brand brand);
+
+        public int UpdateBrand(Brand brand);
+
+        public void DeleteBrand(int Id);
     }
 }

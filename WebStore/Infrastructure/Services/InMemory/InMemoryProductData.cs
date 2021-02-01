@@ -26,5 +26,29 @@ namespace WebStore.Infrastructure.Services.InMemory
             return query;
         }
 
+        public Section GetSection(int sectionId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Brand GetBrand(int brandId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int AddBrand(Brand brand)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int UpdateBrand(Brand brand)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteBrand(int Id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
