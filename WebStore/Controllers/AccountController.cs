@@ -20,8 +20,9 @@ namespace WebStore.Controllers
             _SignInManager = SignInManager;
         }
 
+        #region Register
         public IActionResult Register() => View(new RegisterViewModel());
-        
+
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel Model)
         {
@@ -34,7 +35,7 @@ namespace WebStore.Controllers
 
             var registration_result = await _UserManager.CreateAsync(user, Model.Password);
 
-            if(registration_result.Succeeded)
+            if (registration_result.Succeeded)
             {
                 await _SignInManager.SignInAsync(user, false);
                 return RedirectToAction("Index", "Home");
@@ -45,6 +46,53 @@ namespace WebStore.Controllers
 
             return View(Model);
         }
+        #endregion
 
+        #region Login
+        public IActionResult Login(string ReturnUrl) => View(new LoginViewModel { ReturnUrl = ReturnUrl });
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel Model)
+        {
+            if (!ModelState.IsValid) return View(Model);
+
+            var Login_result = await _SignInManager.PasswordSignInAsync(
+                Model.UserName,
+                Model.Password,
+                Model.RememberMe,
+#if DEBUG
+                false
+#else
+                true
+#endif
+                );
+
+            if (Login_result.Succeeded)
+            {
+                return LocalRedirect(Model.ReturnUrl ?? "/");
+                //if (Url.IsLocalUrl(Model.ReturnUrl))
+                //    return Redirect(Model.ReturnUrl);
+                //return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "неверное имя пользователя или пароль!");
+
+            return View(Model);
+        }
+        #endregion
+
+
+        public async Task<IActionResult> Logout()
+        {
+            await _SignInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            ViewBag.ReturnUrl = ReturnUrl;
+            return View();
+        }
     }
 }
