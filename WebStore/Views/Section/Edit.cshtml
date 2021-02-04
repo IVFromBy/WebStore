@@ -1,7 +1,7 @@
 ﻿@model WebStore.ViewModels.SectionViewModel
 
 @{
-    ViewData["Title"] = "Редактироване "+@Model.Name;
+    ViewData["Title"] = "Редактироване "+@Model?.Name ?? "Новая секция";
 }
 <div class="container">
     <h1>Редактирование</h1>
@@ -23,7 +23,14 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Parent" class="control-label"></label>
-                    <input asp-for="Parent" class="form-control" readonly=@(true)/>
+                    <select name="parentId">
+                        <option value="null"> - </option>
+                        @foreach (var item in Model.SectionList)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                    
                     <span asp-validation-for="Parent" class="text-danger"></span>
                 </div>
                 <div class="form-group">

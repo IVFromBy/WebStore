@@ -55,6 +55,57 @@ namespace WebStore.Infrastructure.Services.InSql
             return brand;
         }
 
+        #region Sections
+        public int AddSection(Section section)
+        {
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Sections.Add(section);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+
+                return section.Id;
+            }
+        }
+
+        public int UpdateSection(Section section)
+        {
+            using (_db.Database.BeginTransaction())
+            {
+                _db.Sections.Update(section);
+
+                _db.SaveChanges();
+
+                _db.Database.CommitTransaction();
+
+                return section.Id;
+            }
+        }
+
+        public void DeleteSection(int Id)
+        {
+            using (_db.Database.BeginTransaction())
+            {
+                var section = _db.Sections.Where(s => s.Id == Id)
+                .FirstOrDefault();
+
+                if (section != null)
+                {
+
+                    _db.Sections.Remove(section);
+
+                    _db.SaveChanges();
+
+                    _db.Database.CommitTransaction();
+                }
+
+            }
+        }
+        #endregion
+
+        #region Brands
         public int AddBrand(Brand brand)
         {
             
@@ -104,6 +155,7 @@ namespace WebStore.Infrastructure.Services.InSql
 
             }
         }
+        #endregion
     }
 
 }
