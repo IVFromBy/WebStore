@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Domain.Entites;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Mapping;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
@@ -18,13 +19,7 @@ namespace WebStore.Controllers
 
         public IActionResult Index()
         {
-            var brands = _ProductData.GetBrands().OrderBy(brand => brand.Order)
-            .Select(brand => new BrandViewModel
-            {
-                Id = brand.Id,
-                Name = brand.Name,
-                ProductCount = brand.Products.Count(),
-            });
+            var brands = _ProductData.GetBrands().OrderBy(brand => brand.Order).ToView();
 
             return View(brands);
         }
@@ -38,24 +33,12 @@ namespace WebStore.Controllers
 
             if (Id <= 0) return BadRequest();
 
-            var brand = _ProductData.GetBrands().Where(b => b.Id == Id)
-                    .Select(brand => new BrandViewModel
-                    {
-                        Id = brand.Id,
-                        Name = brand.Name,
-                        ProductCount = brand.Products.Count(),
-                    }).FirstOrDefault();
-
+            var brand = _ProductData.GetBrand((int)Id);
 
             if (brand is null)
                 return RedirectToAction("NotFound", "Home");
 
-            return View(new BrandViewModel
-            {
-                Id = brand.Id,
-                Name = brand.Name,
-                ProductCount = brand.ProductCount,
-            });
+            return View(brand.ToView());
         }
 
 
@@ -91,41 +74,19 @@ namespace WebStore.Controllers
             if (Id <= 0) return BadRequest();
 
 
-            var brand = _ProductData.GetBrands().Where(b => b.Id == Id)
-                            .Select(brand => new BrandViewModel
-                            {
-                                Id = brand.Id,
-                                Name = brand.Name,
-                                ProductCount = brand.Products.Count(),
-                            }).FirstOrDefault();
+            var brand = _ProductData.GetBrand((int)Id);
 
             if (brand is null)
                 return RedirectToAction("NotFound", "Home");
 
-            return View(brand);
+            return View(brand.ToView());
         }
 
         [HttpPost]
         public IActionResult Delete(int Id)
         {
 
-            var brand = _ProductData.GetBrands().Where(b => b.Id == Id)
-                    .Select(brand => new BrandViewModel
-                    {
-                        Id = brand.Id,
-                        Name = brand.Name,
-                        ProductCount = brand.Products.Count(),
-                    }).FirstOrDefault();
-
-            if (brand.ProductCount > 0)
-                ModelState.AddModelError("", $"Удаление не возможно, есть активные товары {brand.ProductCount} шт. Открепите товар от бренда!");
-
-            if (!ModelState.IsValid)
-            {
-                return View(brand);
-            }
-
-            _ProductData.DeleteBrand(brand.Id );
+            _ProductData.DeleteBrand( Id );
             return RedirectToAction("Index");
         }
         #endregion
