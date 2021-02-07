@@ -12,5 +12,7 @@ namespace WebStore.Domain.Entites
         public int Order { get; set; }
 
         public ICollection<Product> Products { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

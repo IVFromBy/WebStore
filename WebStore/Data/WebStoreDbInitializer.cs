@@ -79,13 +79,9 @@ namespace WebStore.Data
             using (_db.Database.BeginTransaction())
             {
                 _db.Brands.AddRange(TestData.Brands);
-
                 _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] ON");
-
                 _db.SaveChanges();
-
                 _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] OFF");
-
                 _db.Database.CommitTransaction();
             }
             _Logger.LogInformation("Добавление брендов - успех");
@@ -94,13 +90,9 @@ namespace WebStore.Data
             using (_db.Database.BeginTransaction())
             {
                 _db.Products.AddRange(TestData.Products);
-
                 _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] ON");
-                
                 _db.SaveChanges();
-
                 _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] OFF");
-
                 _db.Database.CommitTransaction();
             }
             _Logger.LogInformation("Добавление товаров - успех");

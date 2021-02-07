@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.DAL.Context;
+using WebStore.Data;
 using WebStore.Domain;
 using WebStore.Domain.Entites;
 using WebStore.Infrastructure.Interfaces;
@@ -32,6 +33,11 @@ namespace WebStore.Infrastructure.Services.InSql
 
             return query;
         }
+
+        public Product GetProductById(int Id) => _db.Products
+            .Include(product => product.Brand)
+            .Include(product => product.Section)
+            .FirstOrDefault(product => product.Id == Id);
 
         public Section GetSection(int sectionId)
         {

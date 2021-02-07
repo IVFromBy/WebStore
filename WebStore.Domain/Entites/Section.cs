@@ -14,5 +14,7 @@ namespace WebStore.Domain.Entites
         public Section Parent { get; set; }
 
         public ICollection<Product> Products { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }
