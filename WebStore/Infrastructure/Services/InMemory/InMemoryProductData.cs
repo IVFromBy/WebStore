@@ -14,7 +14,7 @@ namespace WebStore.Infrastructure.Services.InMemory
         public IEnumerable<Section> GetSections() => TestData.Sections;
 
         public IEnumerable<Product> GetProducts(ProductFilter Filter = null)
-        {
+        {/*
             var query = TestData.Products;
 
             if (Filter?.SectionId is { } section_id)
@@ -23,7 +23,8 @@ namespace WebStore.Infrastructure.Services.InMemory
             if (Filter?.BrandId is { } brand_id)
                 query = query.Where(product => product.BrandId == brand_id);
 
-            return query;
+            return query; */
+            throw new System.NotImplementedException();
         }
 
         public Section GetSection(int sectionId)

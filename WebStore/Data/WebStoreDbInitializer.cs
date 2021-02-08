@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebStore.DAL.Context;
 
 namespace WebStore.Data
@@ -26,7 +24,7 @@ namespace WebStore.Data
             //_db.Database.EnsureCreated();
 
             var db = _db.Database;
-            if (db.GetPendingMigrations().Any())            
+            if (db.GetPendingMigrations().Any())
             {
                 _Logger.LogInformation("Выполенние миграции...");
                 db.Migrate();
@@ -39,7 +37,7 @@ namespace WebStore.Data
 
             try
             {
-                InitializeProducts();                
+                InitializeProducts();
             }
             catch (Exception error)
             {
@@ -79,9 +77,7 @@ namespace WebStore.Data
             using (_db.Database.BeginTransaction())
             {
                 _db.Brands.AddRange(TestData.Brands);
-                //_db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] ON");
                 _db.SaveChanges();
-                //_db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] OFF");
                 _db.Database.CommitTransaction();
             }
             _Logger.LogInformation("Добавление брендов - успех");
@@ -89,15 +85,28 @@ namespace WebStore.Data
             _Logger.LogInformation("Добавление товаров...");
             using (_db.Database.BeginTransaction())
             {
-                _db.Products.AddRange(TestData.Products);
-                //_db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] ON");
+
+                var products = TestData.Products;
+                var rnd = new Random();
+                var section_min = _db.Sections.Min(s => s.Id);
+                var section_max = _db.Sections.Max(s => s.Id);
+                var brand_min = _db.Brands.Min(s => s.Id);
+                var brand_max = _db.Brands.Max(s => s.Id);
+
+                foreach (var product in products)
+                {
+
+                    product.SectionId = rnd.Next(section_min, section_max);
+                    product.BrandId = rnd.Next(brand_min, brand_max);
+                }
+
+                _db.Products.AddRange(products);
                 _db.SaveChanges();
-                //_db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] OFF");
                 _db.Database.CommitTransaction();
             }
             _Logger.LogInformation("Добавление товаров - успех");
 
             _Logger.LogInformation("Инициализация товаров выполнена успешно");
         }
-    } 
+    }
 }
