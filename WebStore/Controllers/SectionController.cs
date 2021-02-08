@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Domain.Entites;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Mapping;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
@@ -19,15 +20,7 @@ namespace WebStore.Controllers
         {
             var sections = _ProductData.GetSections();
             var parent_sections = sections.Where(s => s.ParentId is null);
-            var parent_sections_views = parent_sections
-                .Select(s => new SectionViewModel
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    Order = s.Order,
-                    ProductCount = s.Products.Count(),
-                }
-                    ).ToList();
+            var parent_sections_views = parent_sections.ToView().ToList();
 
             int OrderSortMethod(SectionViewModel a, SectionViewModel b) => Comparer<int>.Default.Compare(a.Order, b.Order);
 
@@ -35,15 +28,7 @@ namespace WebStore.Controllers
             {
                 var childs = sections.Where(s => s.ParentId == parent_section.Id);
                 foreach (var child_section in childs)
-                    parent_section.ChildsSection.Add(new SectionViewModel
-                    {
-                        Id = child_section.Id,
-                        Name = child_section.Name,
-                        Order = child_section.Order,
-                        Parent = parent_section,
-                        ProductCount = child_section.Products.Count(),
-
-                    });
+                    parent_section.ChildsSection.Add(child_section.ToView());
 
                 parent_section.ChildsSection.Sort(OrderSortMethod);
             }
@@ -68,13 +53,7 @@ namespace WebStore.Controllers
             if (section is null)
                 return RedirectToAction("NotFound", "Home");
 
-            return View(new SectionViewModel
-            {
-                Id = section.Id,
-                Name = section.Name,
-                Order = section.Order,
-                SectionList = GetSectionsList((int)Id),
-            });
+            return View(section.ToView());
         }
 
         [HttpPost]
@@ -117,12 +96,7 @@ namespace WebStore.Controllers
             if (section is null)
                 return RedirectToAction("NotFound", "Home");
 
-            return View(new SectionViewModel
-            {
-                Id = section.Id,
-                Name = section.Name,
-                Order = section.Order,
-            });
+            return View(section.ToView());
         }
 
         [HttpPost]

@@ -62,5 +62,10 @@ namespace WebStore.Infrastructure.Services.InMemory
         {
             throw new System.NotImplementedException();
         }
+
+        public Product GetProductById(int Id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
