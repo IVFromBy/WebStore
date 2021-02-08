@@ -340,3 +340,6 @@ ASALocalRun/
 healthchecksdb
 /WebStore/wwwroot/lib/jquery
 /WebStore/wwwroot/lib
+/WebStore/wwwroot/js/site.*
+/WebStore/wwwroot/css/site.*
+
