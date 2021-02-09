@@ -13,7 +13,7 @@ namespace WebStore.Controllers
 
         public CartController(ICartService cartService) => _cartService = cartService;
 
-        public IActionResult Index => View(_cartService.GetViewModel());
+        public IActionResult Index() => View(_cartService.GetViewModel());
 
         public IActionResult Add(int id)
         {

@@ -41,8 +41,8 @@ namespace WebStore.Infrastructure.Services.InSql
         }
 
         public Product GetProductById(int Id) => _db.Products
-            .Include(product => product.Brand.IsDeleted == false)
-            .Include(product => product.Section.IsDeleted == false )
+            .Include(product => product.Brand)
+            .Include(product => product.Section)
             .FirstOrDefault(product => product.Id == Id && product.IsDeleted == false);
 
         public Section GetSection(int sectionId)
