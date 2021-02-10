@@ -59,52 +59,74 @@ namespace WebStore.Data
             _Logger.LogInformation("Инициализация товаров...");
             _Logger.LogInformation("Добавление секций...");
 
+            //_db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] ON");
+
+            var products_section = TestData.Sections.Join(
+                TestData.Products,
+                s => s.Id,
+                p => p.SectionId,
+                (section, product) => (section, product));
+
+            foreach (var (section, product) in products_section)
+            {
+                section.Products.Add(product);
+            }
+
+            var products_brand = TestData.Brands.Join(
+                TestData.Products,
+                b => b.Id,
+                p => p.BrandId,
+                (brand, product) => (brand, product));
+
+            foreach (var (brand, product) in products_brand)
+            {
+                brand.Products.Add(product);
+            }
+
+            var section_section = TestData.Sections.Join(
+                TestData.Sections,
+                parent_section => parent_section.Id,
+                child_section => child_section.ParentId,
+                (parent,child) => (parent, child));
+
+            foreach(var (parent,child) in section_section)
+            {
+                child.Parent = parent;
+            }    
+
+            foreach(var product in TestData.Products)
+            {
+                product.Id = 0;
+                product.SectionId = 0;
+                product.BrandId = 0;
+            }
+            
+            foreach(var section in TestData.Sections)
+            {
+                section.Id = 0;
+                section.Parent = null;
+            }
+
+            foreach (var brand in TestData.Brands)
+            {
+                brand.Id = 0;                
+            }
+
             using (_db.Database.BeginTransaction())
             {
+
+                _db.Products.AddRange(TestData.Products);
                 _db.Sections.AddRange(TestData.Sections);
+                _db.Brands.AddRange(TestData.Brands);
 
                 //_db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] ON");
 
                 _db.SaveChanges();
 
-                //_db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] OFF");
 
                 _db.Database.CommitTransaction();
             }
-            _Logger.LogInformation("Добавление секций - успех");
-
-            _Logger.LogInformation("Добавление брендов...");
-            using (_db.Database.BeginTransaction())
-            {
-                _db.Brands.AddRange(TestData.Brands);
-                _db.SaveChanges();
-                _db.Database.CommitTransaction();
-            }
-            _Logger.LogInformation("Добавление брендов - успех");
-
-            _Logger.LogInformation("Добавление товаров...");
-            using (_db.Database.BeginTransaction())
-            {
-
-                var products = TestData.Products;
-                var rnd = new Random();
-                var section_min = _db.Sections.Min(s => s.Id);
-                var section_max = _db.Sections.Max(s => s.Id);
-                var brand_min = _db.Brands.Min(s => s.Id);
-                var brand_max = _db.Brands.Max(s => s.Id);
-
-                foreach (var product in products)
-                {
-
-                    product.SectionId = rnd.Next(section_min, section_max);
-                    product.BrandId = rnd.Next(brand_min, brand_max);
-                }
-
-                _db.Products.AddRange(products);
-                _db.SaveChanges();
-                _db.Database.CommitTransaction();
-            }
-            _Logger.LogInformation("Добавление товаров - успех");
+           
 
             _Logger.LogInformation("Инициализация товаров выполнена успешно");
         }
