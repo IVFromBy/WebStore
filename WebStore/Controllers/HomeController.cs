@@ -23,7 +23,7 @@ namespace WebStore.Controllers
 
         public IActionResult BlogSingle() => View("BlogSingle");
 
-        public IActionResult NotFound() => View("NotFound");
+        //public IActionResult NotFound() => View("NotFound");
 
         public IActionResult ProductDetails() => View("ProductDetails");
 

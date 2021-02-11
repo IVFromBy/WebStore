@@ -24,7 +24,10 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<WebStoreDB>(opt => 
+                  opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                  .UseLazyLoadingProxies()
+                  );
             services.AddTransient<WebStoreDbInitializer>();
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
             services.AddTransient<IProductData, SqlProductData>();
