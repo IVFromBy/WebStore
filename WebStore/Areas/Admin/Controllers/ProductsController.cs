@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain.Entites.Identity;
 using WebStore.Infrastructure.Interfaces;
 
 namespace WebStore.Areas.Admin.Controllers
 {
-    [Area("Admin") /*, Authorize(Roles = Role.Administrator)*/]
+    [Area("Admin"), Authorize(Roles = Role.Administrator)]
     public class ProductsController : Controller
     {
         private readonly IProductData _productData;
 
         public ProductsController(IProductData productData) => _productData = productData;
-        
+
 
         public IActionResult Index()
         {
