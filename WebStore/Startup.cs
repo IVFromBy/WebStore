@@ -32,9 +32,12 @@ namespace WebStore
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
             services.AddTransient<IProductData, SqlProductData>();
             services.AddTransient<ICartService, InCookiesCartService>();
+            services.AddTransient<IOrderService, SqlOrderService>();
+
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<WebStoreDB>()
                 .AddDefaultTokenProviders();
+
             services.Configure<IdentityOptions>(opt =>
            {
 #if DEBUG
