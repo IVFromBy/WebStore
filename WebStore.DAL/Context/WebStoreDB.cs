@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebStore.Domain.Entites;
 using WebStore.Domain.Entites.Identity;
+using WebStore.Domain.Entites.Orders;
 
 namespace WebStore.DAL.Context
 {
@@ -12,6 +13,8 @@ namespace WebStore.DAL.Context
         public DbSet<Brand> Brands { get; set; }
 
         public DbSet<Section> Sections { get; set; }
+        
+        public DbSet<Order> Orders { get; set; }
 
         public WebStoreDB(DbContextOptions<WebStoreDB> options) : base(options) { }
 

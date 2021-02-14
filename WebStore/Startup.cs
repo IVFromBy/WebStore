@@ -24,14 +24,20 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<WebStoreDB>(opt => 
+                  opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                  .UseLazyLoadingProxies()
+                  );
             services.AddTransient<WebStoreDbInitializer>();
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
             services.AddTransient<IProductData, SqlProductData>();
             services.AddTransient<ICartService, InCookiesCartService>();
+            services.AddTransient<IOrderService, SqlOrderService>();
+
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<WebStoreDB>()
                 .AddDefaultTokenProviders();
+
             services.Configure<IdentityOptions>(opt =>
            {
 #if DEBUG
@@ -99,6 +105,10 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
 
                 endpoints.MapControllerRoute(
                     "default",

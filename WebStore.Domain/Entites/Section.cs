@@ -11,9 +11,9 @@ namespace WebStore.Domain.Entites
         public int? ParentId { get; set; }
 
         [ForeignKey(nameof(ParentId))]
-        public Section Parent { get; set; }
+        public virtual Section Parent { get; set; }
 
-        public ICollection<Product> Products { get; set; } = new List<Product>();
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 
         public bool IsDeleted { get; set; } = false;
     }
