@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BrandViewModel>
+
+@{
+    ViewBag.Title = "Список брендов";
+}
+<div class="container">
+    <a asp-controller="Home" asp-action="Index">Домой</a>
+
+    <h3>Список брендов</h3>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <a asp-action="Create" class="btn btn-primary">Создать</a>|<a asp-action="Edit" class="btn btn-primary">Создать ч\з edit</a>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Название брэнда</th>
+                <th>Количество единиц бренда</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in Model)
+            {
+                <tr>
+                    <td>@s.Name.Trim()</td>
+                    <td>@s.ProductCount</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@s.Id">
+                            <i class="fa fa-edit"></i>
+                        </a>|
+                        <a asp-action="Delete" asp-route-id="@s.Id" class="text-danger">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+
+    </table>
+</div>        
