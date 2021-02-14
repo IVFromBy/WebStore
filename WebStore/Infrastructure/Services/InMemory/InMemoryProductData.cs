@@ -27,10 +27,7 @@ namespace WebStore.Infrastructure.Services.InMemory
             throw new System.NotImplementedException();
         }
 
-        public Section GetSection(int sectionId)
-        {
-            throw new System.NotImplementedException();
-        }
+        public Section GetSection(int sectionId) => throw new System.NotImplementedException();
 
         public Brand GetBrand(int brandId)
         {
@@ -48,6 +45,21 @@ namespace WebStore.Infrastructure.Services.InMemory
         }
 
         public void DeleteBrand(int Id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int AddSection(Section brand)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int UpdateSection(Section brand)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteSection(int Id)
         {
             throw new System.NotImplementedException();
         }

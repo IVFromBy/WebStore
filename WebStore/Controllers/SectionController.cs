@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Domain.Entites;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Mapping;
 using WebStore.ViewModels;
@@ -37,10 +38,13 @@ namespace WebStore.Controllers
         }
 
         #region Edit        
+
+        public IActionResult Create() => View("Edit", new SectionViewModel { SectionList = GetSectionsList(0) });
+
         public IActionResult Edit(int? Id)
         {
             if (Id is null)
-                return View(new SectionViewModel());
+                return View(new SectionViewModel { SectionList = GetSectionsList(0)});
 
             if (Id <= 0) return BadRequest();
 
@@ -52,7 +56,33 @@ namespace WebStore.Controllers
             return View(section.ToView());
         }
 
-      
+        [HttpPost]
+        public IActionResult Edit(SectionViewModel pSection)
+        {
+            if (pSection is null)
+                throw new ArgumentNullException(nameof(pSection));
+
+            if (!ModelState.IsValid)
+            {
+                return View(pSection);
+            }
+            var section = new Section
+            {
+                Id = pSection.Id,
+                Name = pSection.Name,
+               // ParentId = pSection.Parent.Id,
+                Order = pSection.Order,
+                
+            };
+
+            if (section.Id == 0)
+                _ProductData.AddSection(section);
+            else
+                _ProductData.UpdateSection(section);
+
+            return RedirectToAction("Index");
+        }
+
         #endregion
 
         #region Delete
@@ -72,10 +102,26 @@ namespace WebStore.Controllers
         [HttpPost]
         public IActionResult DeleteAction(int Id)
         {
-           // _EmployeesData.Delete(Id);
+            // _EmployeesData.Delete(Id);
             return RedirectToAction("Index");
         }
         #endregion
 
+        private List<SectionViewModel> GetSectionsList(int Id)
+        {
+            var sections = _ProductData.GetSections();
+            var parent_sections = sections.Where(s => s.ParentId != Id);
+            var parent_sections_views = parent_sections
+                .Select(s => new SectionViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Order = s.Order,
+                    ProductCount = s.Products.Count(),
+                }
+                    ).ToList();
+
+            return parent_sections_views;
+        }
     }
 }

@@ -20,11 +20,20 @@ namespace WebStore.Infrastructure.Interfaces
         public Section GetSection(int sectionId);
 
         public Brand GetBrand(int brandId);
+        #region Sections
+        public int AddSection(Section brand);
 
+        public int UpdateSection(Section brand);
+
+        public void DeleteSection(int Id);
+        #endregion
+
+        #region Brands
         public int AddBrand(Brand brand);
 
         public int UpdateBrand(Brand brand);
 
         public void DeleteBrand(int Id);
+        #endregion
     }
 }
