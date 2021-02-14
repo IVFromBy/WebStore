@@ -25,18 +25,24 @@ namespace WebStore.Infrastructure.Services.InSql
         {
             IQueryable<Product> query = _db.Products.Where(product => product.IsDeleted == false);
 
-            if (Filter?.SectionId is { } section_id)
-                query = query.Where(product => product.SectionId == section_id );
+            if(Filter?.Ids?.Length>0)
+            {
+                query = query.Where(product => Filter.Ids.Contains(product.Id));
+            }
+            else
+            {
+                if (Filter?.SectionId is { } section_id)
+                    query = query.Where(product => product.SectionId == section_id);
 
-            if (Filter?.BrandId is { } brand_id)
-                query = query.Where(product => product.BrandId == brand_id );
-
+                if (Filter?.BrandId is { } brand_id)
+                    query = query.Where(product => product.BrandId == brand_id);
+            }
             return query;
         }
 
         public Product GetProductById(int Id) => _db.Products
-            .Include(product => product.Brand.IsDeleted == false)
-            .Include(product => product.Section.IsDeleted == false )
+            .Include(product => product.Brand)
+            .Include(product => product.Section)
             .FirstOrDefault(product => product.Id == Id && product.IsDeleted == false);
 
         public Section GetSection(int sectionId)
