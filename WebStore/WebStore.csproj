@@ -2,8 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>bca239bb-9b73-49c5-b1f3-11c98228cfac</UserSecretsId>
+    <UserSecretsId>bca239bb-9b73-49c5-b1f3-11c98228cfac</UserSecretsId>        
   </PropertyGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\site.css" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.3" />

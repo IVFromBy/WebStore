@@ -5,7 +5,7 @@ namespace WebStore.Domain.Entites.Identity
     public class User : IdentityUser
     {
         public const string Administrator = "Admin";
-        public const string DefaultAdminPassword = "AdPass";
+        public const string DefaultAdminPassword = "OdminPas1!";
 
         public string Description { get; set; }
     }

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Domain.Entites;
+using WebStore.Domain.Entites.Identity;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Mapping;
 using WebStore.ViewModels;
@@ -16,7 +18,7 @@ namespace WebStore.Controllers
 
         public BrandController(IProductData ProductData) => _ProductData = ProductData;
 
-
+        [Authorize(Roles = Role.Administrator)]
         public IActionResult Index()
         {
             var brands = _ProductData.GetBrands().OrderBy(brand => brand.Order).ToView();
