@@ -21,6 +21,8 @@ namespace WebStore.ServiceHosting
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                }
+              )            
+            ;
     }
 }
