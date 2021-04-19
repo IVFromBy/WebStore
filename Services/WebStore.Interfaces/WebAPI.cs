@@ -11,5 +11,6 @@ namespace WebStore.Interfaces
         public const string TestWebAPI = "api/values";
         public const string Emploees = "api/employees";
         public const string Products = "api/products";
+        public const string Orders = "api/orders";
     }
 }
