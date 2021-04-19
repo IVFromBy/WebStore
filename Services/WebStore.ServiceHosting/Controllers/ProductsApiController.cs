@@ -15,22 +15,22 @@ namespace WebStore.ServiceHosting.Controllers
         private readonly IProductData _productData;
 
         public ProductsApiController(IProductData productData) => _productData = productData;
-
+        [HttpPost("brand")]
         public int AddBrand(Brand brand)
         {
             return _productData.AddBrand(brand);
         }
-
+        [HttpPost("section")]
         public int AddSection(Section brand)
         {
             return _productData.AddSection(brand);
         }
-
+        [HttpDelete("brand/{id}")]
         public void DeleteBrand(int Id)
         {
             _productData.DeleteBrand(Id);
         }
-
+        [HttpDelete("section/{id}")]
         public void DeleteSection(int Id)
         {
             _productData.DeleteSection(Id);
@@ -67,12 +67,12 @@ namespace WebStore.ServiceHosting.Controllers
         {
             return _productData.GetSections();
         }
-
+        [HttpPut("brand/{brand}")]
         public int UpdateBrand(Brand brand)
         {
             return _productData.UpdateBrand(brand);
         }
-
+        [HttpPut("section/{brand}")]
         public int UpdateSection(Section brand)
         {
             return _productData.UpdateSection(brand);

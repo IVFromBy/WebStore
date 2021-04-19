@@ -35,7 +35,7 @@ namespace WebStore.Infrastructure.Mapping
             Id = brand.Id,
             Name = brand.Name,
             Order = brand.Order,
-
+            ProductCount = brand.Products.Count(),
         };
 
         public static Brand FromDto(this BrandDto brand) => brand is null ? null : new Brand
@@ -43,7 +43,7 @@ namespace WebStore.Infrastructure.Mapping
             Id = brand.Id,
             Name = brand.Name,
             Order = brand.Order,
-
+            
         };
 
         public static IEnumerable<BrandDto> ToDto(this IEnumerable<Brand> brands) => brands.Select(ToDto);

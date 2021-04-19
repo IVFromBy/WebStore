@@ -10,9 +10,9 @@ using WebStore.Interfaces;
 
 namespace WebStore.Clients.Products
 {
-    public class ProductsCliest : BaseClient, IProductData
+    public class ProductsClient : BaseClient, IProductData
     {
-        public ProductsCliest(IConfiguration configuration) : base(configuration, WebAPI.Products)
+        public ProductsClient(IConfiguration configuration) : base(configuration, WebAPI.Products)
         {
 
         }

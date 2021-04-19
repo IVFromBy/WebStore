@@ -5,7 +5,7 @@
 @{ var products = productData
                         .GetProducts()
                         .OrderBy(p => p.Order)
-                        .Take(6)
+                        .Take(6).FromDto()
                         .ToView(); }
 
 <partial name="Partial/_Slider" />

@@ -37,6 +37,7 @@ namespace WebStore.Infrastructure.Mapping
             Name = section.Name,
             Order = section.Order,
             ParentId = section.ParentId,
+            ProductCount = section.Products?.Count() ?? default,
 
         };
 

@@ -21,7 +21,7 @@ namespace WebStore.Controllers
         [Authorize(Roles = Role.Administrator)]
         public IActionResult Index()
         {
-            var brands = _ProductData.GetBrands().OrderBy(brand => brand.Order).ToView();
+            var brands = _ProductData.GetBrands().OrderBy(brand => brand.Order).FromDto().ToView();
 
             return View(brands);
         }
@@ -35,7 +35,7 @@ namespace WebStore.Controllers
 
             if (Id <= 0) return BadRequest();
 
-            var brand = _ProductData.GetBrand((int)Id);
+            var brand = _ProductData.GetBrand((int)Id).FromDto();
 
             if (brand is null)
                 return RedirectToAction("NotFound", "Home");
@@ -81,7 +81,7 @@ namespace WebStore.Controllers
             if (brand is null)
                 return RedirectToAction("NotFound", "Home");
 
-            return View(brand.ToView());
+            return View(brand.FromDto().ToView());
         }
 
         [HttpPost]
