@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using WebStore.Clients.Base;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Interfaces;
@@ -14,7 +15,9 @@ namespace WebStore.Clients.Employees
 {
     public class EmployeesClient : BaseClient, IEmployeesData
     {
-        public EmployeesClient(IConfiguration configuration ) : base(configuration, WebAPI.Emploees) { }
+        private readonly ILogger _logger;
+
+        public EmployeesClient(IConfiguration configuration, ILogger<EmployeesClient> logger) : base(configuration, WebAPI.Emploees) => _logger = logger;
 
         public int Add(Employee employee) => Post(Addres, employee).Content.ReadAsAsync<int>().Result;
 
@@ -22,7 +25,16 @@ namespace WebStore.Clients.Employees
         //Post<Employee>($"{Addres}/employees?LastName={LastName}&FirtsName={FirstName}&Patronymic={Patronymic}", "")
         //.Content.ReadAsAsync<Employee>().Result;
 
-        public bool Delete(int id) => Delete($"{Addres}/{id}").IsSuccessStatusCode;
+        public bool Delete(int id)
+        {
+            _logger.LogInformation("Удаление сотрудника id:{0} ...");
+
+            var result = Delete($"{Addres}/{id}").IsSuccessStatusCode;
+
+            _logger.LogInformation("Удаление сотрудника id:{0}  - {1}", id, result ? "выполнение" : "не найден");
+
+            return result;
+        }
 
         public IEnumerable<Employee> Get() => Get<IEnumerable<Employee>>(Addres);
 

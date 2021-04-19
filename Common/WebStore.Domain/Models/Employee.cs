@@ -14,6 +14,6 @@ namespace WebStore.Models
         public string Education { get; set; }
         public int IQ { get; set; }
         public string PhoneNumber { get; set; }
-
+        public override string ToString() => $"{LastName} {FirstName} {Patronymic} {Age}";
     }
 }
