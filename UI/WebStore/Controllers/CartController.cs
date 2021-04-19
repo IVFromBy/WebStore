@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Domain.Entites.DTO;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.ViewModels;
 
@@ -50,11 +51,22 @@ namespace WebStore.Controllers
                     Order = orderModel,
                 });
 
-            var order = await orderService.CreateOrder(
-                User.Identity.Name,
-                _cartService.GetViewModel(),
-                orderModel
-                );
+            //var order = await orderService.CreateOrder(
+            //    User.Identity.Name,
+            //    _cartService.GetViewModel(),
+            //    orderModel
+            //    );
+            var order_model = new CreateOrderModel
+            {
+                Order = orderModel,
+                Items = _cartService.GetViewModel().Items.Select(item => new OrderItemDto
+                {
+                    Price = item.Product.Price,
+                    Quantity = item.Quantity,
+
+                }).ToList()
+            };
+            var order = await orderService.CreateOrder(User.Identity.Name, order_model);
 
             _cartService.Clear();
 

@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
+using WebStore.Domain.Entites.DTO;
 using WebStore.Domain.Entites.Identity;
 using WebStore.Domain.Entites.Orders;
 using WebStore.Infrastructure.Interfaces;
-using WebStore.ViewModels;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Infrastructure.Services.InSql
 {
@@ -23,7 +24,7 @@ namespace WebStore.Infrastructure.Services.InSql
             _UserManager = userManager;
         }
 
-        public async Task<Order> CreateOrder(string UserName, CartViewModel Cart, OrderViewModel OrderModel)
+        public async Task<OrderDto> CreateOrder(string UserName, CreateOrderModel OrderModel)
         {
             var user = await _UserManager.FindByNameAsync(UserName);
 
@@ -34,50 +35,64 @@ namespace WebStore.Infrastructure.Services.InSql
 
             var order = new Order
             {
-                Name = OrderModel.Name,
-                Address = OrderModel.Address,
-                Phone = OrderModel.Phone,
+                Name = OrderModel.Order.Name,
+                Address = OrderModel.Order.Address,
+                Phone = OrderModel.Order.Phone,
                 User = user,
 
 
             };
 
-            var product_ids = Cart.Items.Select(item => item.Product.Id).ToArray();
+            //var product_ids = Cart.Items.Select(item => item.Product.Id).ToArray();
 
-            var cart_product = await _db.Products
-                .Where(p => product_ids.Contains(p.Id))
-                .ToArrayAsync();
+            //var cart_product = await _db.Products
+            //    .Where(p => product_ids.Contains(p.Id))
+            //    .ToArrayAsync();
 
-            order.Items = Cart.Items.Join(
+            //order.Items = Cart.Items.Join(
 
-                cart_product,
-                cart_item => cart_item.Product.Id,
-                product => product.Id,
-                (cart_item, product) => new OrderItem
+            //    cart_product,
+            //    cart_item => cart_item.Product.Id,
+            //    product => product.Id,
+            //    (cart_item, product) => new OrderItem
+            //    {
+            //        Order = order,
+            //        Product = product,
+            //        Price = product.Price,
+            //        Quantty = cart_item.Quantity,
+            //    }).ToArray();
+            foreach (var item in OrderModel.Items)
+            {
+                var product = await _db.Products.FindAsync(item.Id);
+                if (product is null) continue;
+                var order_item = new OrderItem
                 {
                     Order = order,
                     Product = product,
                     Price = product.Price,
-                    Quantty = cart_item.Quantity,
-                }).ToArray();
+                    Quantty = item.Quantity,
+                };
+                order.Items.Add(order_item);
+            }
 
             await _db.Orders.AddAsync(order);
             await _db.SaveChangesAsync();
             await transaction.CommitAsync();
 
-            return order;
+            return order.ToDto();
         }
 
-        public async Task<Order> GetOrderById(int id) => await _db.Orders
+        public async Task<OrderDto> GetOrderById(int id) => (await _db.Orders
                  .Include(order => order.User)
                  .Include(order => order.Items)
-                 .FirstOrDefaultAsync(order => order.Id == id);
+                 .FirstOrDefaultAsync(order => order.Id == id)).ToDto();
 
-        public async Task<IEnumerable<Order>> GetUserOrders(string UserName) => await _db.Orders
+        public async Task<IEnumerable<OrderDto>> GetUserOrders(string UserName) => (await _db.Orders
                  .Include(order => order.User)
                  .Include(order => order.Items)
                  .Where(order => order.User.UserName == UserName)
-                 .ToArrayAsync();
+                 .ToArrayAsync())
+            .Select(order => order.ToDto());
 
     }
 }

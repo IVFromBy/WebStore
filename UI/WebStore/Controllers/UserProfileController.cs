@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Services.Mapping;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
@@ -22,7 +23,7 @@ namespace WebStore.Controllers
                 Name = o.Name,
                 Address = o.Address,
                 Phone = o.Phone,
-                TotalPrice = o.Items.Sum(i => i.Quantty * i.Price),
+                TotalPrice = o.Items.Sum(i => i.FromDto().Quantty * i.FromDto().Price),
 
             }
 
