@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using WebStore.DAL.Context;
+using WebStore.Data;
 
 namespace WebStore.ServiceHosting
 {
@@ -19,6 +22,10 @@ namespace WebStore.ServiceHosting
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<WebStoreDB>(opt =>
+                      opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            );
+            services.AddTransient<WebStoreDbInitializer>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
