@@ -29,24 +29,14 @@ namespace WebStore
     {
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<WebStoreDB>(opt => 
-                  opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-                  .UseLazyLoadingProxies()
-                  );
-            services.AddTransient<WebStoreDbInitializer>();
-
-            //services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
+        {          
             services.AddTransient<IEmployeesData, EmployeesClient>();
-            //services.AddTransient<IProductData, SqlProductData>();
             services.AddTransient<IProductData, ProductsClient>();
-            services.AddTransient<ICartService, InCookiesCartService>();
-            //services.AddTransient<IOrderService, SqlOrderService>();
+            services.AddTransient<ICartService, InCookiesCartService>();            
             services.AddTransient<IOrderService, OrdersClient>();
             services.AddTransient<IValuesService, ValuesClient>();
 
-            services.AddIdentity<User, Role>()
-                //.AddEntityFrameworkStores<WebStoreDB>()
+            services.AddIdentity<User, Role>()            
                 .AddDefaultTokenProviders();
 
             #region Связка identity
@@ -98,9 +88,8 @@ namespace WebStore
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer db)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            db.Initiallize();
 
             if (env.IsDevelopment())
             {
