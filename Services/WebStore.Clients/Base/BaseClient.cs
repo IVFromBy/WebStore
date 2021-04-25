@@ -42,14 +42,14 @@ namespace WebStore.Clients.Base
             return response.EnsureSuccessStatusCode();
         }
 
-        protected HttpResponseMessage Put<T>(string url, T item, CancellationToken cancel = default) => PutAsync(url, item).Result;
+        protected HttpResponseMessage Put<T>(string url, T item) => PutAsync(url, item).Result;
         protected async Task<HttpResponseMessage> PutAsync<T>(string url, T item, CancellationToken cancel = default)
         {
             var response = await Http.PutAsJsonAsync(url, item, cancel);
             return response.EnsureSuccessStatusCode();
         }
 
-        protected HttpResponseMessage Delete(string url, CancellationToken cancel = default) => DeleteAsync(url).Result;
+        protected HttpResponseMessage Delete(string url) => DeleteAsync(url).Result;
         protected async Task<HttpResponseMessage> DeleteAsync(string url, CancellationToken cancel = default)
         {
             var response = await Http.DeleteAsync(url,cancel);

@@ -151,7 +151,7 @@ namespace WebStore.ServiceHosting.Controllers.Identity
         #endregion
 
         #region TwoFactor
-        [HttpPost("GetTwoFactorEnable")]
+        [HttpPost("GetTwoFactorEnabled")]
         public async Task<bool> GetTwoFactorEnableAsync([FromBody] User user) => await _UserStore.GetTwoFactorEnabledAsync(user);
 
         [HttpPost("SetTwoFactor/{enable}")]
