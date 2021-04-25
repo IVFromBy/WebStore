@@ -24,5 +24,6 @@ namespace WebStore.ServiceHosting.Controllers.Identity
 
         [HttpGet("all")]
         public async Task<IEnumerable<Role>> GetAllRoles() => await _RoleStore.Roles.ToArrayAsync();
+
     }
 }
