@@ -2,24 +2,24 @@
 using System.Xml;
 using Microsoft.Extensions.Logging;
 
-namespace Webstore.Logger
+namespace WebStore.Logger
 {
     public class Log4NetLoggerProvider : ILoggerProvider
     {
-        private readonly string _configurationFile;
-        private readonly ConcurrentDictionary<string, Log4NetLogger> _loggers = new();
-        public Log4NetLoggerProvider(string ConfigurationFile) => _configurationFile = ConfigurationFile;
+        private readonly string _ConfigurationFile;
+        private readonly ConcurrentDictionary<string, Log4NetLogger> _Loggers = new();
 
-        public ILogger CreateLogger(string category)
-        =>
-            _loggers.GetOrAdd(category, c =>
+        public Log4NetLoggerProvider(string ConfigurationFile) => _ConfigurationFile = ConfigurationFile;
+
+        public ILogger CreateLogger(string Category) =>
+            _Loggers.GetOrAdd(Category, category =>
             {
                 var xml = new XmlDocument();
-                xml.Load(_configurationFile);
+                xml.Load(_ConfigurationFile);
+
                 return new Log4NetLogger(category, xml["log4net"]);
             });
-        
 
-        public void Dispose() => _loggers.Clear();
+        public void Dispose() => _Loggers.Clear();
     }
 }

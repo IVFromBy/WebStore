@@ -1,27 +1,23 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using Microsoft.Extensions.Logging;
 using WebStore.Clients.Employees;
 using WebStore.Clients.Identity;
 using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
-using WebStore.DAL.Context;
-using WebStore.Data;
 using WebStore.Domain.Entites.Identity;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Middleware;
-using WebStore.Infrastructure.Services;
 using WebStore.Infrastructure.Services.InCookies;
-using WebStore.Infrastructure.Services.InMemory;
-using WebStore.Infrastructure.Services.InSql;
 using WebStore.Interfaces.TestAPI;
+using WebStore.Logger;
 
 namespace WebStore
 {
@@ -29,14 +25,14 @@ namespace WebStore
     {
 
         public void ConfigureServices(IServiceCollection services)
-        {          
+        {
             services.AddTransient<IEmployeesData, EmployeesClient>();
             services.AddTransient<IProductData, ProductsClient>();
-            services.AddTransient<ICartService, InCookiesCartService>();            
+            services.AddTransient<ICartService, InCookiesCartService>();
             services.AddTransient<IOrderService, OrdersClient>();
             services.AddTransient<IValuesService, ValuesClient>();
 
-            services.AddIdentity<User, Role>()  
+            services.AddIdentity<User, Role>()
                 .AddIdentityWebStoreWebAPIClient()
                 .AddDefaultTokenProviders();
 
@@ -90,8 +86,9 @@ namespace WebStore
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory log)
         {
+            log.AddLog4Net();
 
             if (env.IsDevelopment())
             {

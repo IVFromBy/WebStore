@@ -19,9 +19,9 @@ namespace WebStore.Infrastructure.Services.InSql
     {
         private readonly WebStoreDB _db;
         private readonly UserManager<User> _UserManager;
-        private readonly Logger<SqlOrderService> _logger;
+        private readonly ILogger<SqlOrderService> _logger;
 
-        public SqlOrderService(WebStoreDB db, UserManager<User> userManager, Logger<SqlOrderService> logger)
+        public SqlOrderService(WebStoreDB db, UserManager<User> userManager, ILogger<SqlOrderService> logger)
         {
             _db = db;
             _UserManager = userManager;

@@ -3,27 +3,27 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 
-namespace Webstore.Logger
+namespace WebStore.Logger
 {
     public static class Log4NetLoggerFactoryExtensions
     {
-        private static string CheckFilePath(string filePath)
+        private static string CheckFilePath(string FilePath)
         {
-            if (filePath is not { Length: > 0 }) throw new ArgumentException("Указан некорректный путь к файлу", nameof(filePath));
+            //if(!(FilePath != null && FilePath.Length > 0))
+            if (FilePath is not { Length: > 0 })
+                throw new ArgumentException("Указан некорректный путь к файлу", nameof(FilePath));
 
-            if (Path.IsPathRooted(filePath)) return filePath;
+            if (Path.IsPathRooted(FilePath)) return FilePath;
 
             var assembly = Assembly.GetEntryAssembly();
             var dir = Path.GetDirectoryName(assembly!.Location);
-            return Path.Combine(dir, filePath);
-
-
+            return Path.Combine(dir!, FilePath);
         }
-        public static ILoggerFactory AddLog4Net(this ILoggerFactory factory, string ConfigurationFile ="log4net.config")
-        {
-            factory.AddProvider(new Log4NetLoggerProvider(ConfigurationFile));
 
-            return factory;
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory Factory, string ConfigurationFile = "log4net.config")
+        {
+            Factory.AddProvider(new Log4NetLoggerProvider(CheckFilePath(ConfigurationFile)));
+            return Factory;
         }
     }
 }

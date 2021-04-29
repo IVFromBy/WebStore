@@ -1,30 +1,29 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using log4net;
 using Microsoft.Extensions.Logging;
 
-namespace Webstore.Logger
+namespace WebStore.Logger
 {
-
     public class Log4NetLogger : ILogger
     {
         private readonly ILog _Log;
-        public Log4NetLogger(string Category, XmlElement Configuratio)
+
+        public Log4NetLogger(string Category, XmlElement Configuration)
         {
             var logger_repository = LogManager.CreateRepository(
                 Assembly.GetEntryAssembly(),
                 typeof(log4net.Repository.Hierarchy.Hierarchy));
+
             _Log = LogManager.GetLogger(logger_repository.Name, Category);
 
-            log4net.Config.XmlConfigurator.Configure(logger_repository, Configuratio);
+            log4net.Config.XmlConfigurator.Configure(logger_repository, Configuration);
         }
 
         public IDisposable BeginScope<TState>(TState state) => null;
-        public bool IsEnabled(LogLevel logLevel) => logLevel switch
+
+        public bool IsEnabled(LogLevel LogLevel) => LogLevel switch
         {
             LogLevel.None => false,
             LogLevel.Trace => _Log.IsDebugEnabled,
@@ -33,23 +32,26 @@ namespace Webstore.Logger
             LogLevel.Warning => _Log.IsWarnEnabled,
             LogLevel.Error => _Log.IsErrorEnabled,
             LogLevel.Critical => _Log.IsFatalEnabled,
-            _ => throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null)
-
-
+            _ => throw new ArgumentOutOfRangeException(nameof(LogLevel), LogLevel, null)
         };
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(
+            LogLevel Level,
+            EventId Id,
+            TState State,
+            Exception Error,
+            Func<TState, Exception, string> Formatter)
         {
-            if (formatter is null)
-                throw new ArgumentOutOfRangeException(nameof(formatter));
+            if (Formatter is null)
+                throw new ArgumentOutOfRangeException(nameof(Formatter));
 
-            var log_message = formatter(state, exception);
+            var log_message = Formatter(State, Error);
 
-            if (string.IsNullOrEmpty(log_message) && exception is null) return;
+            if (string.IsNullOrEmpty(log_message) && Error is null) return;
 
-            switch(logLevel)
+            switch (Level)
             {
-                default: throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null);
+                default: throw new ArgumentOutOfRangeException(nameof(Level), Level, null);
                 case LogLevel.None: break;
 
                 case LogLevel.Trace:
@@ -67,11 +69,11 @@ namespace Webstore.Logger
                     break;
 
                 case LogLevel.Error:
-                    _Log.Error(log_message, exception);
+                    _Log.Error(log_message, Error);
                     break;
 
                 case LogLevel.Critical:
-                    _Log.Fatal(log_message, exception);
+                    _Log.Fatal(log_message, Error);
                     break;
             }
         }
