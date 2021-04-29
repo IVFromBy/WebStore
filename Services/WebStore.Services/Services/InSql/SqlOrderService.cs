@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entites.DTO;
 using WebStore.Domain.Entites.Identity;
@@ -17,11 +19,13 @@ namespace WebStore.Infrastructure.Services.InSql
     {
         private readonly WebStoreDB _db;
         private readonly UserManager<User> _UserManager;
+        private readonly Logger<SqlOrderService> _logger;
 
-        public SqlOrderService(WebStoreDB db, UserManager<User> userManager)
+        public SqlOrderService(WebStoreDB db, UserManager<User> userManager, Logger<SqlOrderService> logger)
         {
             _db = db;
             _UserManager = userManager;
+            _logger = logger;
         }
 
         public async Task<OrderDto> CreateOrder(string UserName, CreateOrderModel OrderModel)
@@ -30,7 +34,8 @@ namespace WebStore.Infrastructure.Services.InSql
 
             if (user is null)
                 throw new InvalidOperationException($"Пользователь {UserName} не найден в БД");
-
+            _logger.LogInformation("Оформление нового заказа для {UserName}");
+            var timer = Stopwatch.StartNew();
             await using var transaction = await _db.Database.BeginTransactionAsync().ConfigureAwait(false);
 
             var order = new Order
@@ -78,7 +83,7 @@ namespace WebStore.Infrastructure.Services.InSql
             await _db.Orders.AddAsync(order);
             await _db.SaveChangesAsync();
             await transaction.CommitAsync();
-
+            _logger.LogInformation("Заказ для {0} успешно сформирован за {1}с id:{2}", UserName, timer.Elapsed, order.Id);
             return order.ToDto();
         }
 

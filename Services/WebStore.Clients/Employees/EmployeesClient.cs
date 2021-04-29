@@ -27,13 +27,15 @@ namespace WebStore.Clients.Employees
 
         public bool Delete(int id)
         {
-            _logger.LogInformation("Удаление сотрудника id:{0} ...");
+            _logger.LogInformation("Удаление сотрудника id:{0} ...", id);
+            using (_logger.BeginScope("Удаление сотрудника id:{0} ...", id))
+            {
+                var result = Delete($"{Addres}/{id}").IsSuccessStatusCode;
 
-            var result = Delete($"{Addres}/{id}").IsSuccessStatusCode;
+                _logger.LogInformation("Удаление сотрудника id:{0}  - {1}", id, result ? "выполнение" : "не найден");
 
-            _logger.LogInformation("Удаление сотрудника id:{0}  - {1}", id, result ? "выполнение" : "не найден");
-
-            return result;
+                return result;
+            }
         }
 
         public IEnumerable<Employee> Get() => Get<IEnumerable<Employee>>(Addres);
@@ -46,6 +48,6 @@ namespace WebStore.Clients.Employees
 
         public void Update(Employee employee) => Put(Addres, employee);
 
-        
+
     }
 }
