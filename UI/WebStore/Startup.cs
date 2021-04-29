@@ -106,8 +106,8 @@ namespace WebStore
 
             app.UseWelcomePage("/wel");
 
-            app.UseMiddleware<TestMiddleware>();
-
+            //app.UseMiddleware<TestMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.MapWhen(
                  context => context.Request.Query.ContainsKey("id") && context.Request.Query["id"] == "5",
                  context => context.Run(async request => await request.Response.WriteAsync("Hell id = 5!!!"))
