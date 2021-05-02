@@ -6,6 +6,8 @@ using WebStore.Domain;
 using WebStore.Domain.Entites;
 using WebStore.Domain.Entites.DTO;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Services;
 using WebStore.ViewModels;
 using Assert = Xunit.Assert;
 
@@ -16,6 +18,9 @@ namespace WebStore.Services.Tests.Services
     {
         private Cart _Cart;
         private Mock<IProductData> _ProductDataMock;
+        private Mock<ICartStore> _CartStoreMock;
+
+        private ICartService _CartService;
 
         [TestInitialize]
         public void Initialize()
@@ -66,7 +71,10 @@ namespace WebStore.Services.Tests.Services
                     },
                 }
                 );
+            _CartStoreMock = new Mock<ICartStore>();
+            _CartStoreMock.Setup(c => c.Cart).Returns(_Cart);
 
+            _CartService = new CartService(_CartStoreMock.Object, _ProductDataMock.Object);
         }
 
         [TestMethod]
@@ -117,5 +125,90 @@ namespace WebStore.Services.Tests.Services
 
             Assert.Equal(expected_Price, actual_count);
         }
+
+        [TestMethod]
+        public void CartService_AddToCart_WorkCorrect()
+        {
+            _Cart.Items.Clear();
+            const int expected_id = 5;
+            const int expected_tems_count = 1;
+            
+            _CartService.Add(expected_id);
+
+            Assert.Equal(expected_tems_count, _Cart.ItemsCount);
+            Assert.Single(_Cart.Items);
+            Assert.Equal(expected_id, _Cart.Items.First().ProductId);
+        }
+
+        [TestMethod]
+        public void CartService_Remove_Correct()
+        {            
+            const int item_id = 1;
+            const int expected_product_count = 2;
+
+            _CartService.Remove(item_id);
+
+            
+            Assert.Single(_Cart.Items);
+            Assert.Equal(expected_product_count, _Cart.Items.Single().ProductId);
+        }
+
+        [TestMethod]
+        public void CartService_Clear_ClearCart()
+        {
+            _Cart.Items.Clear();
+
+            Assert.Empty(_Cart.Items);
+        }
+
+
+        [TestMethod]
+        public void CartService_Decriment_Correct()
+        {
+            const int item_id = 2;
+            const int expected_quantity = 2;
+            const int expected_items_count = 3;
+            const int expected_product_count = 2;
+
+            _CartService.Decrement(item_id);
+
+            Assert.Equal(expected_items_count, _Cart.ItemsCount);
+            Assert.Equal(expected_product_count, _Cart.Items.Count);
+            var items = _Cart.Items.ToArray();
+            Assert.Equal(item_id, items[1].ProductId);
+            Assert.Equal(expected_quantity, items[1].Quantity);
+
+        }
+
+        [TestMethod]
+        public void CartService_Remove_Item_When_Decrement_to_0()
+        {
+            const int item_id = 1;
+            const int expected_items_count = 3;
+
+
+            _CartService.Decrement(item_id);
+
+            Assert.Equal(expected_items_count, _Cart.ItemsCount);
+            Assert.Single(_Cart.Items);
+
+
+        }
+
+        [TestMethod]
+        public void CartService_GetViewModel_WorkCorrect()
+        {
+            const decimal expected_first_product_price = 1.1m;
+            const int expected_items_count = 4;
+
+
+            var result = _CartService.GetViewModel();
+
+            Assert.Equal(expected_items_count, result.ItemsCount);
+            Assert.Equal(expected_first_product_price, result.Items.First().Product.Price); 
+
+
+        }
+
     }
 }
