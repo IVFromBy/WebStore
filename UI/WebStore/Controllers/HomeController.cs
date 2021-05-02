@@ -23,12 +23,19 @@ namespace WebStore.Controllers
 
         public IActionResult BlogSingle() => View("BlogSingle");
 
-        //public IActionResult NotFound() => View("NotFound");
+        public IActionResult Error404() => View("NotFound");
 
         public IActionResult ProductDetails() => View("ProductDetails");
 
         public IActionResult Product() => View("Shop");
 
+        public IActionResult SecondAction(string id) => Content($"Action with values id:{id}");
 
+        public void Throw() => throw new ApplicationException("Test error!");
+
+        public object ErrorStatus(string code) => code switch
+        { "404" => RedirectToAction(nameof(Error404)),
+            _ => Content($"Error code: {code}")
+        };
     }
 }
