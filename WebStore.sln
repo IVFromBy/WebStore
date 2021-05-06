@@ -17,13 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore", "UI\WebStore\Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Interfaces", "Services\WebStore.Interfaces\WebStore.Interfaces.csproj", "{C2EB512F-EA85-4674-9749-AC1F6CB18832}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Services", "services\WebStore.Services\WebStore.Services.csproj", "{30F6823E-DA61-411F-B29A-52B0D741122F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Services", "Services\WebStore.Services\WebStore.Services.csproj", "{30F6823E-DA61-411F-B29A-52B0D741122F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.ServiceHosting", "Services\WebStore.ServiceHosting\WebStore.ServiceHosting.csproj", "{A4AE3FC7-F2EE-487A-847F-B4B3F049024C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.Clients", "Services\WebStore.Clients\WebStore.Clients.csproj", "{338A18E6-D2DA-4298-9366-C7FFB8451F93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webstore.Logger", "common\Webstore.Logger\Webstore.Logger.csproj", "{490EF951-E43D-4B4D-B6DE-43446BF180BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webstore.Logger", "Common\Webstore.Logger\Webstore.Logger.csproj", "{490EF951-E43D-4B4D-B6DE-43446BF180BE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B54953A6-A81F-43F7-91C9-B5F18C0748FE}"
 EndProject
