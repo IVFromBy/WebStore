@@ -1,10 +1,14 @@
 ﻿@model SelectableSectionsViewModel
+@{
+    var section_id = ViewBag.SectionId;
+    var parent_section_id = ViewData["ParentSectionId"];
+}
     
 <h2>Category</h2>
     
 <div class="panel-group category-products" id="accordian">
     <!--category-productsr-->
-    @foreach (var parent_section in Model.Sections.Where(s => s.TotalProductCount>0))
+    @foreach (var parent_section in Model.Sections)
     {
         @if (parent_section.ChildsSection.Count > 0)
         {
