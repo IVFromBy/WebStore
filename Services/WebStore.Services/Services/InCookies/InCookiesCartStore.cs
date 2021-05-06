@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using WebStore.Domain.Entites;
 using WebStore.Interfaces.Services;
@@ -15,7 +10,7 @@ namespace WebStore.Services.Services.InCookies
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _CartName;
 
-        public InCookiesCartStore(IHttpContextAccessor httpContextAccessor, string cartName)
+        public InCookiesCartStore(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             var user = httpContextAccessor.HttpContext.User;
