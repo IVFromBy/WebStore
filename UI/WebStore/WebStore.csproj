@@ -36,11 +36,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\WebStore.Domain\WebStore.Domain.csproj" />
-    <ProjectReference Include="..\..\common\Webstore.Logger\Webstore.Logger.csproj" />
+    <ProjectReference Include="..\..\Common\Webstore.Logger\Webstore.Logger.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.Clients\WebStore.Clients.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.DAL\WebStore.DAL.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.Interfaces\WebStore.Interfaces.csproj" />
-    <ProjectReference Include="..\..\services\WebStore.Services\WebStore.Services.csproj" />
+    <ProjectReference Include="..\..\Services\WebStore.Services\WebStore.Services.csproj" />
   </ItemGroup>
 
 </Project>
