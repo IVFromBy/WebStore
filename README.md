@@ -2,4 +2,4 @@
 Обучение ASP.Net Core
 
 результат сборки
-[![Unit test](https://github.com/IVFromBy/WebStore/actions/workflows/testing.yml/badge.svg)](https://github.com/IVFromBy/WebStore/actions/workflows/testing.yml)
+[![utest.NET](https://github.com/IVFromBy/WebStore/actions/workflows/dotnet.yml/badge.svg)](https://github.com/IVFromBy/WebStore/actions/workflows/dotnet.yml)
