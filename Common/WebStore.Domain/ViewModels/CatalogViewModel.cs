@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WebStore.ViewModels
 {
@@ -9,5 +10,19 @@ namespace WebStore.ViewModels
         public int? SectionId { get; init; }
 
         public int? BrandId { get; init; }
+
+        public PageViewModel PageViewModel { get; set; }
+    }
+
+    public class PageViewModel
+    {
+        public int Page { get; set; }
+
+        public int PageSize { get; set; }
+
+        public int TotalItems { get; set; }
+
+        public int TotalPages => PageSize == 0 ? 0 : (int)Math.Ceiling((double)TotalItems / PageSize);
+
     }
 }
