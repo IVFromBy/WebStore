@@ -52,6 +52,10 @@ namespace WebStore.Domain.Entites.DTO
         /// количество
         /// </summary>
         public int Quantity { get; set; }
+        /// <summary>
+        /// Id Товара
+        /// </summary>
+        public int ProductId { get; set; }
     }
     /// <summary>
     /// Модель процесса создания заказа
