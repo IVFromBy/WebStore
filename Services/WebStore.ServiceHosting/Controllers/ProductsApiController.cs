@@ -53,7 +53,7 @@ namespace WebStore.ServiceHosting.Controllers
             return _productData.GetProductById(Id);
         }
         [HttpPost]
-        public IEnumerable<ProductDto> GetProducts(ProductFilter Filter = null)
+        public PageProductDto GetProducts(ProductFilter Filter = null)
         {
             return _productData.GetProducts(Filter);
         }
