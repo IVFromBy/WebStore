@@ -41,7 +41,10 @@
                                         @product.Name
                                     </a>
                                 </p>
-                                <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" 
+                                   data-id="@product.Id"
+                                   class="btn btn-default add-to-cart">
+                                <i class="fa fa-shopping-cart"></i>Add to cart</a>
                             </div>
                         </div>
                     </div>
