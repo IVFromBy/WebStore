@@ -1,0 +1,11 @@
+﻿@model CartViewModel
+
+@{ 
+    var items_cont = Model.ItemsCount;
+    var count = items_cont > 0 ? $"({items_cont})" : null;
+}
+
+
+    <a asp-controller="Cart" asp-action="Index">
+      <i class="fa fa-shopping-cart"></i> Cart @count
+    </a>
