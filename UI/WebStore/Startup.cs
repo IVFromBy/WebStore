@@ -13,6 +13,7 @@ using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.Domain.Entites.Identity;
+using WebStore.Hubs;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Infrastructure.Services.InCookies;
@@ -88,6 +89,7 @@ namespace WebStore
             services
                 .AddControllersWithViews(/*opt => opt.Conventions.Add(new TestControllerModelConventions())*/)
                 .AddRazorRuntimeCompilation();
+            services.AddSignalR();
         }
 
 
@@ -122,6 +124,8 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/chat");
+
                 endpoints.MapControllerRoute(
                   name: "areas",
                   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

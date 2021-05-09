@@ -12,7 +12,7 @@ namespace WebStore.TagHelpers
 {
     public class Paging : TagHelper
     {
-        private IUrlHelperFactory _urlHelperFactory;
+       // private IUrlHelperFactory _urlHelperFactory;
 
         [ViewContext, HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
