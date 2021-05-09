@@ -24,6 +24,10 @@
             </div>
 
             <div class="col-sm-9 padding-right">
+                <div id="catalog-items-container">
+                    <partial name="Partial/_FeaturesItems" model="Model.Products" />
+                </div>
+
                 <partial name="Partial/_FeatureItems" model="Model.Products" />
                 <paging page-model="Model.PageViewModel"
                         page-action="Index"
