@@ -64,7 +64,7 @@ namespace WebStore.Controllers
         #region WebApi
 
         public IActionResult GetFeaturesItems(int? BrandId, int? SectionId, int Page = 1, int? PageSize = null)=>
-            PartialView("Partial/_FeaturesItems", GetProducts(BrandId, SectionId, Page, PageSize));
+            PartialView("Partial/_FeatureItems", GetProducts(BrandId, SectionId, Page, PageSize));
 
         private IEnumerable<ProductViewModel> GetProducts(int? BrandId, int? SectionId, int Page, int? PageSize) =>
             _ProductData.GetProducts(new ProductFilter
