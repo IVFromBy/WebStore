@@ -22,7 +22,7 @@ namespace WebStore.Components
             {
                 Id = brand.Id,
                 Name = brand.Name,
-                ProductCount = brand.Products.Count(),
+                ProductCount = brand.ProductCount,
             });
 
     }

@@ -20,7 +20,7 @@ namespace WebStore.Controllers
         {
             var sections = _ProductData.GetSections();
             var parent_sections = sections.Where(s => s.ParentId is null);
-            var parent_sections_views = parent_sections.ToView().ToList();
+            var parent_sections_views = parent_sections.FromDto().ToView().ToList();
 
             int OrderSortMethod(SectionViewModel a, SectionViewModel b) => Comparer<int>.Default.Compare(a.Order, b.Order);
 
@@ -28,7 +28,7 @@ namespace WebStore.Controllers
             {
                 var childs = sections.Where(s => s.ParentId == parent_section.Id);
                 foreach (var child_section in childs)
-                    parent_section.ChildsSection.Add(child_section.ToView());
+                    parent_section.ChildsSection.Add(child_section.FromDto().ToView());
 
                 parent_section.ChildsSection.Sort(OrderSortMethod);
             }
@@ -53,7 +53,7 @@ namespace WebStore.Controllers
             if (section is null)
                 return RedirectToAction("NotFound", "Home");
 
-            return View(section.ToView());
+            return View(section.FromDto().ToView());
         }
 
         [HttpPost]
@@ -96,7 +96,7 @@ namespace WebStore.Controllers
             if (section is null)
                 return RedirectToAction("NotFound", "Home");
 
-            return View(section.ToView());
+            return View(section.FromDto().ToView());
         }
 
         [HttpPost]
@@ -109,7 +109,7 @@ namespace WebStore.Controllers
 
         private List<SectionViewModel> GetSectionsList(int Id)
         {
-            var sections = _ProductData.GetSections();
+            var sections = _ProductData.GetSections().FromDto();
             var parent_sections = sections.Where(s => s.ParentId != Id);
             var parent_sections_views = parent_sections
                 .Select(s => new SectionViewModel

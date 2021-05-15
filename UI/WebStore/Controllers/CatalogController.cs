@@ -29,6 +29,7 @@ namespace WebStore.Controllers
                 BrandId = BrandId,
                 Products = products
                  .OrderBy(p => p.Order)
+                 .FromDto()
                  .ToView()
 
             });
@@ -37,7 +38,7 @@ namespace WebStore.Controllers
         public IActionResult Details(int id)
         {
 
-            return View(_ProductData.GetProductById(id).ToView());
+            return View(_ProductData.GetProductById(id).FromDto().ToView());
         }
 
     }

@@ -1,23 +1,23 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using Microsoft.Extensions.Logging;
+using WebStore.Clients.Employees;
+using WebStore.Clients.Identity;
+using WebStore.Clients.Orders;
+using WebStore.Clients.Products;
 using WebStore.Clients.Values;
-using WebStore.DAL.Context;
-using WebStore.Data;
 using WebStore.Domain.Entites.Identity;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Middleware;
-using WebStore.Infrastructure.Services;
 using WebStore.Infrastructure.Services.InCookies;
-using WebStore.Infrastructure.Services.InMemory;
-using WebStore.Infrastructure.Services.InSql;
 using WebStore.Interfaces.TestAPI;
+using WebStore.Logger;
 
 namespace WebStore
 {
@@ -26,20 +26,29 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebStoreDB>(opt => 
-                  opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-                  .UseLazyLoadingProxies()
-                  );
-            services.AddTransient<WebStoreDbInitializer>();
-            services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
-            services.AddTransient<IProductData, SqlProductData>();
+            services.AddTransient<IEmployeesData, EmployeesClient>();
+            services.AddTransient<IProductData, ProductsClient>();
             services.AddTransient<ICartService, InCookiesCartService>();
-            services.AddTransient<IOrderService, SqlOrderService>();
+            services.AddTransient<IOrderService, OrdersClient>();
             services.AddTransient<IValuesService, ValuesClient>();
 
             services.AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<WebStoreDB>()
+                .AddIdentityWebStoreWebAPIClient()
                 .AddDefaultTokenProviders();
+
+            //services.AddIdentityWebStoreWebAPIClient();
+            //#region Связка identity
+            //services.AddTransient<IUserStore<User>, UsersClient>();
+            //services.AddTransient<IUserRoleStore <User>, UsersClient>();
+            //services.AddTransient<IUserPasswordStore<User>, UsersClient>();
+            //services.AddTransient<IUserEmailStore<User>, UsersClient>();
+            //services.AddTransient<IUserPhoneNumberStore<User>, UsersClient>();
+            //services.AddTransient<IUserTwoFactorStore<User>, UsersClient>();
+            //services.AddTransient<IUserClaimStore<User>, UsersClient>();
+            //services.AddTransient<IUserLoginStore<User>, UsersClient>();
+
+            //services.AddTransient<IRoleStore<Role>, RolesClient>();
+            //#endregion
 
             services.Configure<IdentityOptions>(opt =>
            {
@@ -77,9 +86,9 @@ namespace WebStore
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer db)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory log)
         {
-            db.Initiallize();
+            log.AddLog4Net();
 
             if (env.IsDevelopment())
             {
@@ -97,8 +106,8 @@ namespace WebStore
 
             app.UseWelcomePage("/wel");
 
-            app.UseMiddleware<TestMiddleware>();
-
+            //app.UseMiddleware<TestMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.MapWhen(
                  context => context.Request.Query.ContainsKey("id") && context.Request.Query["id"] == "5",
                  context => context.Run(async request => await request.Response.WriteAsync("Hell id = 5!!!"))

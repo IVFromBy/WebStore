@@ -40,25 +40,28 @@ namespace WebStore.Controllers
                 UserName = Model.UserName,
             };
 
-            var registration_result = await _UserManager.CreateAsync(user, Model.Password);
-
-            if (registration_result.Succeeded)
+            using (_logger.BeginScope("Регистрация пользователя {Model.UserName}"))
             {
-                _logger.LogInformation($"Пользователь {Model.UserName} успешно зарегестрирован");
-                await _UserManager.AddToRoleAsync(user, Role.User);
-                _logger.LogInformation($"Пользователь {Model.UserName} наделён ролью {Role.User}");
-                await _SignInManager.SignInAsync(user, false);
-                return RedirectToAction("Index", "Home");
+                var registration_result = await _UserManager.CreateAsync(user, Model.Password);
+
+                if (registration_result.Succeeded)
+                {
+                    _logger.LogInformation($"Пользователь {Model.UserName} успешно зарегестрирован");
+                    await _UserManager.AddToRoleAsync(user, Role.User);
+                    _logger.LogInformation($"Пользователь {Model.UserName} наделён ролью {Role.User}");
+                    await _SignInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                _logger.LogWarning("В процессер регистрации пользователя {0} возникли ошибки {1} "
+                    , Model.UserName
+                    , string.Join(',', registration_result.Errors.Select(e => e.Description)));
+
+                foreach (var error in registration_result.Errors)
+                    ModelState.AddModelError("", error.Description);
             }
 
-            _logger.LogWarning("В процессер регистрации пользователя {0} возникли ошибки {1} "
-                , Model.UserName
-                , string.Join(',', registration_result.Errors.Select(e => e.Description)));
-
-            foreach (var error in registration_result.Errors)
-                ModelState.AddModelError("", error.Description);
-
-            return View(Model);
+                return View(Model);
         }
         #endregion
 

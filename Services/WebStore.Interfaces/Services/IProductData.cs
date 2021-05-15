@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WebStore.Domain;
 using WebStore.Domain.Entites;
+using WebStore.Domain.Entites.DTO;
 
 namespace WebStore.Infrastructure.Interfaces
 {
-    public interface IProductData        
+    public interface IProductData
     {
-        IEnumerable<Section> GetSections();
+        IEnumerable<SectionDto> GetSections();
 
-        IEnumerable<Brand> GetBrands();
+        IEnumerable<BrandDto> GetBrands();
 
-        IEnumerable<Product> GetProducts(ProductFilter Filter = null);
+        IEnumerable<ProductDto> GetProducts(ProductFilter Filter = null);
 
-        public Product GetProductById(int Id);
+        public ProductDto GetProductById(int Id);
 
-        public Section GetSection(int sectionId);
+        public SectionDto GetSection(int sectionId);
 
-        public Brand GetBrand(int brandId);
+        public BrandDto GetBrand(int brandId);
         #region Sections
         public int AddSection(Section brand);
 
