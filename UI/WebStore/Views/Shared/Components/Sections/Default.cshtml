@@ -1,10 +1,14 @@
-﻿@model IEnumerable<SectionViewModel>
+﻿@model SelectableSectionsViewModel
+@{
+    var section_id = ViewBag.SectionId;
+    var parent_section_id = ViewData["ParentSectionId"];
+}
     
 <h2>Category</h2>
     
 <div class="panel-group category-products" id="accordian">
     <!--category-productsr-->
-    @foreach (var parent_section in Model.Where(s => s.TotalProductCount>0))
+    @foreach (var parent_section in Model.Sections)
     {
         @if (parent_section.ChildsSection.Count > 0)
         {
@@ -20,10 +24,14 @@
                 <div id="@parent_section.GetHashCode()" class="panel-collapse collapse">
                     <div class="panel-body">
                         <ul>
-                            @foreach (var child_section in parent_section.ChildsSection.Where(s => s.TotalProductCount>0))
+                            @foreach (var child_section in parent_section.ChildsSection.Where(s => s.TotalProductCount > 0))
                             {
-                                <li><a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@child_section.Id">@child_section.Name </a></li>
-                            }
+                        <li @(child_section.Id == Model.SectionId ? "class=active" : null)>
+                            <a asp-controller="Catalog" asp-action="Index"
+                               asp-route-SectionId="@child_section.Id">
+                                @child_section.Name
+                            </a>
+                        </li>}
 
                         </ul>
                     </div>

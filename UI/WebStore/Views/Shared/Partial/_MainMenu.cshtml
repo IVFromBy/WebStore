@@ -1,25 +1,34 @@
 ﻿<ul class="nav navbar-nav collapse navbar-collapse">
     <li><a asp-controller="Home" asp-action="Index" class="active">Home</a></li>
     <li class="dropdown">
-        <a href="#">Shop<i class="fa fa-angle-down"></i></a>
+        <a is-active-route ignore-action asp-controller="Catalog" asp-action="Index">Shop<i class="fa fa-angle-down"></i></a>
         <ul role="menu" class="sub-menu">
-            <li><a asp-controller="Catalog" asp-action="Index">Products</a></li>
-            <li><a asp-controller="Home" asp-action="ProductDetails">Product Details</a></li>
-            <li><a asp-controller="Cart" asp-action="Index">Корзина</a></li>
-            <li><a asp-controller="Account" asp-action="Login">Войти</a></li>
+            <li><a is-active-route asp-controller="Catalog" asp-action="Index">Products</a></li>
+            <li><a is-active-route asp-controller="Home" asp-action="ProductDetails">Product Details</a></li>
+            <li><a is-active-route asp-controller="Cart" asp-action="Index">Корзина</a></li>
+            <li><a is-active-route asp-controller="Account" asp-action="Login">Войти</a></li>
         </ul>
     </li>
     <li class="dropdown">
         <a href="#">Blog<i class="fa fa-angle-down"></i></a>
         <ul role="menu" class="sub-menu">
-            <li><a asp-controller="Home" asp-action="Blog">Blog List</a></li>
-            <li><a asp-controller="Home" asp-action="BlogSingle">Blog Single</a></li>
+            <li><a is-active-route asp-controller="Home" asp-action="Blog">Blog List</a></li>
+            <li><a is-active-route asp-controller="Home" asp-action="BlogSingle">Blog Single</a></li>
         </ul>
     </li>
 
-    <li><a asp-controller="Home" asp-action="NotFound">404</a></li>
-    <li><a asp-controller="Home" asp-action="ContactUs">Связь с нами</a></li>
-    <li><a asp-controller="Employees" asp-action="Index">Сотрудники</a></li>
-    <li><a asp-controller="Brand" asp-action="Index">Бренды</a></li>
-    <li><a asp-controller="WebApi" asp-action="Index">WebAPI</a></li>
+    <li><a is-active-route asp-controller="Home" asp-action="NotFound">404</a></li>
+    <li><a is-active-route asp-controller="Home" asp-action="ContactUs">Связь с нами</a></li>
+    <li><a is-active-route asp-controller="Employees" asp-action="Index">Сотрудники</a></li>
+    <li><a is-active-route asp-controller="Brand" asp-action="Index">Бренды</a></li>
+    <li><a asp-controller="WebApi" asp-action="Index" class="@IsActive("WebApi")">WebAPI</a></li>
 </ul>
+
+@functions
+{
+    string IsActive(string Controller, string Action = "Index") =>
+        Equals(Controller, ViewContext.RouteData.Values["Controller"])
+        && Equals(Action, ViewContext.RouteData.Values["Action"])
+        ? "active"
+        : null;
+}

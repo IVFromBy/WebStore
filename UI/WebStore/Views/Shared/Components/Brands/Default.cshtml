@@ -5,9 +5,10 @@
     <h2>Brands</h2>
     <div class="brands-name">
         <ul class="nav nav-pills nav-stacked">
-            @foreach (var brand in Model.Where(b => b.ProductCount>0))
+            @foreach (var brand in Model)
             {
-                <li><a asp-controller="Catalog" asp-action="Index" asp-route-BrandId="@brand.Id"> 
+                <li @(brand.Id ==ViewBag.BrandId ? "class=active":null)>
+            <a asp-controller="Catalog" asp-action="Index" asp-route-BrandId="@brand.Id"> 
                     <span class="pull-right">(@brand.ProductCount)</span>@brand.Name</a></li>
             }
 
