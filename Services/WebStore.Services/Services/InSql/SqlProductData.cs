@@ -23,13 +23,13 @@ namespace WebStore.Infrastructure.Services.InSql
 
         public IEnumerable<SectionDto> GetSections() => _db.Sections.Include(s => s.Products.Where(p => p.IsDeleted == false)).Where(s => s.IsDeleted == false).ToDto();
 
-        public IEnumerable<ProductDto> GetProducts(ProductFilter Filter = null)
+        public PageProductDto GetProducts(ProductFilter Filter = null)
         {
             IQueryable<Product> query = _db.Products.Where(product => product.IsDeleted == false)
             .Include(product => product.Brand)
             .Include(product => product.Section);
 
-            if (Filter?.Ids?.Length>0)
+            if (Filter?.Ids?.Length > 0)
             {
                 query = query.Where(product => Filter.Ids.Contains(product.Id));
             }
@@ -41,7 +41,18 @@ namespace WebStore.Infrastructure.Services.InSql
                 if (Filter?.BrandId is { } brand_id)
                     query = query.Where(product => product.BrandId == brand_id);
             }
-            return query.ToDto();
+
+            var total_count = query.Count();
+            //if (Filter?.PageSize > 0)
+            //    query = query.Skip((Filter.Page - 1) * (int)Filter.PageSize)
+            //        .Take((int)Filter.PageSize);
+
+            if (Filter is { PageSize: > 0 and var page_size, Page: > 0 and var page_number})
+                query = query
+                    .Skip((page_number - 1) * page_size)
+                    .Take(page_size);
+
+            return new PageProductDto( query.ToDto(),total_count);
         }
 
         public ProductDto GetProductById(int Id) => _db.Products
@@ -63,10 +74,10 @@ namespace WebStore.Infrastructure.Services.InSql
         {
             var brand = _db.Brands.Include(brand => brand.Products)
                 .Where(b => b.Id == brandId && b.IsDeleted == false)
-                
+
                 .FirstOrDefault();
 
-           // brand.Products = GetProducts(new ProductFilter { BrandId = brand.Id, SectionId = null }).ToList();
+            // brand.Products = GetProducts(new ProductFilter { BrandId = brand.Id, SectionId = null }).ToList();
             if (brand is null)
                 return new BrandDto();
 
@@ -126,18 +137,18 @@ namespace WebStore.Infrastructure.Services.InSql
         #region Brands
         public int AddBrand(Brand brand)
         {
-            
+
             using (_db.Database.BeginTransaction())
             {
                 _db.Brands.Add(brand);
-             
-                _db.SaveChanges();             
+
+                _db.SaveChanges();
 
                 _db.Database.CommitTransaction();
 
                 return brand.Id;
             }
-            
+
         }
 
         public int UpdateBrand(Brand brand)
@@ -160,7 +171,7 @@ namespace WebStore.Infrastructure.Services.InSql
             {
                 var brand = _db.Brands.Where(s => s.Id == Id)
                 .FirstOrDefault();
-                
+
                 brand.IsDeleted = true;
 
                 if (brand != null)

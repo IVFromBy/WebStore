@@ -3,7 +3,7 @@
 
 @inject IProductData productData
 @{ var products = productData
-                        .GetProducts()
+                        .GetProducts().Products
                         .OrderBy(p => p.Order)
                         .Take(6).FromDto()
                         .ToView(); }

@@ -44,10 +44,10 @@ namespace WebStore.Clients.Products
         public ProductDto GetProductById(int Id) => Get<ProductDto>($"{Addres}/{Id}");
         
 
-        public IEnumerable<ProductDto> GetProducts(ProductFilter Filter = null) =>
+        public PageProductDto GetProducts(ProductFilter Filter = null) =>
               Post(Addres, Filter ?? new ProductFilter())
               .Content
-              .ReadAsAsync<IEnumerable<ProductDto>>()
+              .ReadAsAsync<PageProductDto>()
             .Result;
 
         public SectionDto GetSection(int sectionId) => Get<SectionDto>($"{Addres}/sections/{sectionId}");
