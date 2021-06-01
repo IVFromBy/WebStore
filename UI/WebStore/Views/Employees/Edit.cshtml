@@ -1,7 +1,7 @@
 ﻿@model WebStore.ViewModels.EmployeeViewModel
 
 @{
-    ViewData["Title"] = $"Редактирование: "+@Model.LastName;
+    ViewData["Title"] = $"Редактирование: " + @Model.LastName;
 }
 
 <h1>Редактирование</h1>
@@ -65,3 +65,7 @@
     </div>
 </div>
 
+@section Scripts
+{
+    <partial name="Partial/_ValidationScriptsPartial" />
+}

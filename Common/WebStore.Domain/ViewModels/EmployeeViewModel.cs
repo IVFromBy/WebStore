@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebStore.ViewModels
 {
-    public class EmployeeViewModel : IValidatableObject
+    public class EmployeeViewModel //: IValidatableObject
     {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; init; }
@@ -50,11 +50,11 @@ namespace WebStore.ViewModels
         [Display(Name = "Рабочий телефон")]
         public string PhoneNumber { get; init; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
+       // public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
             //validationContext.GetService()
-            yield return ValidationResult.Success;
+          //  yield return ValidationResult.Success;
             //yield return new ValidationResult("Текст ошибки", new[] { nameof(FirstName)});
-        }
+        //}
     }
 }

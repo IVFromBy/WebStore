@@ -24,7 +24,10 @@
             </div>
 
             <div class="col-sm-9 padding-right">
-                <partial name="Partial/_FeatureItems" model="Model.Products" />
+                <div id="catalog-items-container">
+                    <partial name="Partial/_FeatureItems" model="Model.Products" />
+                </div>
+                
                 <paging page-model="Model.PageViewModel"
                         page-action="Index"
                         page-url-SectionId="@Model.SectionId"
@@ -36,3 +39,16 @@
         </div>
     </div>
 </section>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-loading-overlay/loadingoverlay.min.js" ></script>
+    <script src="~/js/Catalog/CatalogLogik.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            Catalog.init({
+                getViewLink: "@Url.Action("GetFeaturesItems", "Catalog")"
+            })
+        })
+    </script>
+}
